@@ -3,7 +3,7 @@
 Plugin Name: Checkout Fees for WooCommerce
 Plugin URI: http://coder.fm/item/checkout-fees-for-woocommerce-plugin/
 Description: WooCommerce Payment Gateways Fees and Discounts.
-Version: 1.0.0
+Version: 1.1.0
 Author: Algoritmika Ltd
 Author URI: http://www.algoritmika.com
 Copyright: © 2015 Algoritmika Ltd.
@@ -81,6 +81,8 @@ final class Alg_Woocommerce_Checkout_Fees {
 
 	/**
 	 * Include required core files used in admin and on the frontend.
+	 *
+	 * @version 1.1.0
 	 */
 	private function includes() {
 
@@ -104,6 +106,8 @@ final class Alg_Woocommerce_Checkout_Fees {
 			}
 		}
 
+		require_once( 'includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php' );
+		
 		require_once( 'includes/class-wc-checkout-fees.php' );
 	}
 

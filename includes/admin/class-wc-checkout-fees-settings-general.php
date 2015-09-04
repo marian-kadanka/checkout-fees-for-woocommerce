@@ -2,7 +2,7 @@
 /**
  * Checkout Fees for WooCommerce - General Section Settings
  *
- * @version 1.0.0
+ * @version 1.1.0
  * @since   1.0.0
  * @author  Algoritmika Ltd.
  */
@@ -58,6 +58,26 @@ class Alg_WC_Checkout_Fees_Settings_General {
 			array(
 				'type'      => 'sectionend',
 				'id'        => 'alg_woocommerce_checkout_fees_options',
+			),
+
+			array(
+				'title'     => __( 'Per Product', 'alg-woocommerce-fees' ),
+				'type'      => 'title',
+				'id'        => 'alg_woocommerce_checkout_fees_per_product_options',
+			),
+
+			array(
+				'title'     => __( 'Payment Gateways Fees and Discounts on per Product Basis', 'alg-woocommerce-fees' ),
+				'desc'      => __( 'Enable', 'alg-woocommerce-fees' ),
+				'desc_tip'  => __( 'This will add meta boxes with fees settings to each product\'s edit page.', 'alg-woocommerce-fees' ),
+				'id'        => 'alg_woocommerce_checkout_fees_per_product_enabled',
+				'default'   => 'no',
+				'type'      => 'checkbox',
+			),
+
+			array(
+				'type'      => 'sectionend',
+				'id'        => 'alg_woocommerce_checkout_fees_per_product_options',
 			),
 
 		);

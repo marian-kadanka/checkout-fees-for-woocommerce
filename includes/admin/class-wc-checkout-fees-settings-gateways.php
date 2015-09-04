@@ -2,7 +2,7 @@
 /**
  * Checkout Fees for WooCommerce - Gateways Section(s) Settings
  *
- * @version 1.0.0
+ * @version 1.1.0
  * @since   1.0.0
  * @author  Algoritmika Ltd.
  */
@@ -57,6 +57,8 @@ class Alg_WC_Checkout_Fees_Settings_Gateways {
 
 	/**
 	 * add_gateway_fees_settings.
+	 *
+	 * @version 1.1.0
 	 */
 	function add_gateway_fees_settings() {
 
@@ -103,8 +105,8 @@ class Alg_WC_Checkout_Fees_Settings_Gateways {
 				'type'      => 'select',
 				'options'   => array(
 					'fixed'   => __( 'Fixed', 'alg-woocommerce-fees' ),
+					'percent' => __( 'Percent', 'alg-woocommerce-fees' ),
 				),
-				'custom_attributes' => array( 'disabled' => 'disabled' ),
 			),
 
 			array(
@@ -114,7 +116,7 @@ class Alg_WC_Checkout_Fees_Settings_Gateways {
 				'id'        => 'alg_gateways_fees_value_' . $key,
 				'default'   => 0,
 				'type'      => 'number',
-				'custom_attributes' => array( 'step' => '0.01', ),
+				'custom_attributes' => array( 'step' => '0.0001', ),
 			),
 
 			array(
@@ -124,7 +126,7 @@ class Alg_WC_Checkout_Fees_Settings_Gateways {
 				'id'        => 'alg_gateways_fees_min_cart_amount_' . $key,
 				'default'   => 0,
 				'type'      => 'number',
-				'custom_attributes' => array( 'step' => '0.01', 'min' => '0', ),
+				'custom_attributes' => array( 'step' => '0.0001', 'min' => '0', ),
 			),
 
 			array(
@@ -134,7 +136,7 @@ class Alg_WC_Checkout_Fees_Settings_Gateways {
 				'id'        => 'alg_gateways_fees_max_cart_amount_' . $key,
 				'default'   => 0,
 				'type'      => 'number',
-				'custom_attributes' => array( 'step' => '0.01', 'min' => '0', ),
+				'custom_attributes' => array( 'step' => '0.0001', 'min' => '0', ),
 			),
 
 			array(
