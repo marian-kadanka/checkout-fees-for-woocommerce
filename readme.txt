@@ -1,6 +1,6 @@
 === Checkout Fees for WooCommerce ===
-Contributors: algoritmika
-Tags: woocommerce,payment,gateway,fee,discount
+Contributors: algoritmika,anbinder
+Tags: woocommerce,payment,gateway,fee,discount,checkout
 Requires at least: 3.8
 Tested up to: 4.3
 Stable tag: 1.0.0
