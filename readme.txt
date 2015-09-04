@@ -47,6 +47,7 @@ Plugin requires **minimum setup**: after enabling the fee/discount for selected 
 == Screenshots ==
 
 1. Plugin admin area.
+2. Setting checkout fees/discounts on per product basis.
 
 == Changelog ==
 
