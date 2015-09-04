@@ -7,11 +7,11 @@ Stable tag: 1.0.0
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Plugin extends WooCommerce by adding options to *set payment gateways fees and discounts*.
+Set fees or discounts for WooCommerce payment gateways.
 
 == Description ==
 
-WooCommerce Payment Gateways Fees and Discounts.
+**Checkout Fees for WooCommerce** plugin extend WooCommerce by adding options to set **payment gateways fees or discounts**.
 
 = Feedback =
 * We are open to your suggestions and feedback - Thank you for using or trying out one of our plugins!
