@@ -12,7 +12,9 @@ Set fees or discounts for WooCommerce payment gateways.
 == Description ==
 
 **Checkout Fees for WooCommerce** plugin extend WooCommerce by adding options to set **payment gateways fees or discounts**.
+
 Fees and discounts can be added to both *standart WooCommerce payment gateways* (Direct Bank Transfer (BACS), Cheque Payment, Cash on Delivery and PayPal) and *custom payment gateways* added with any other plugin.
+
 Plugin requires minimum setup: after enabling the fee/discount for selected gateway, you can set:
 * fee/discount value,
 * minimum and/or maximum cart amount for adding the fee/discount,
