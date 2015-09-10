@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: Checkout Fees for WooCommerce
+Plugin Name: Checkout Fees and Discounts for WooCommerce
 Plugin URI: http://coder.fm/item/checkout-fees-for-woocommerce-plugin/
 Description: WooCommerce Payment Gateways Fees and Discounts.
-Version: 1.1.0
+Version: 1.1.1
 Author: Algoritmika Ltd
 Author URI: http://www.algoritmika.com
 Copyright: © 2015 Algoritmika Ltd.
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) return;
 
 // Check if Pro is active, if so then return
-if ( in_array( 'crowdfunding-for-woocommerce-pro/woocommerce-checkout-fees-pro.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) return;
+if ( in_array( 'checkout-fees-for-woocommerce-pro/woocommerce-checkout-fees-pro.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) return;
 
 if ( ! class_exists( 'Alg_Woocommerce_Checkout_Fees' ) ) :
 

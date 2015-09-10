@@ -1,9 +1,9 @@
-=== Checkout Fees for WooCommerce ===
+=== Checkout Fees and Discounts for WooCommerce ===
 Contributors: algoritmika,anbinder
 Tags: woocommerce,payment,gateway,fee,discount,checkout
 Requires at least: 3.8
 Tested up to: 4.3
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -11,7 +11,7 @@ Set fees or discounts for WooCommerce payment gateways.
 
 == Description ==
 
-**Checkout Fees for WooCommerce** plugin extend WooCommerce by adding options to set **payment gateways fees or discounts**.
+**Checkout Fees and Discounts for WooCommerce** plugin extend WooCommerce by adding options to set **payment gateways fees or discounts**.
 
 Checkout fees and discounts can be added to **all payment gateways**, both:
 
@@ -36,7 +36,7 @@ Plugin requires **minimum setup**: after enabling the fee/discount for selected 
 * Drop us a line at http://www.algoritmika.com
 
 = More =
-* Visit the *Checkout Fees for WooCommerce* plugin page at http://coder.fm/item/checkout-fees-for-woocommerce-plugin/
+* Visit the *Checkout Fees and Discounts for WooCommerce* plugin page at http://coder.fm/item/checkout-fees-for-woocommerce-plugin/
 
 == Installation ==
 
@@ -50,6 +50,10 @@ Plugin requires **minimum setup**: after enabling the fee/discount for selected 
 2. Setting checkout fees/discounts on per product basis.
 
 == Changelog ==
+
+= 1.1.1 - 11/09/2015 =
+* Dev - Renaming from "Checkout Fees for WooCommerce" to "Checkout Fees and Discounts for WooCommerce".
+* Fix - Disabling on pro version check fixed.
 
 = 1.1.0 - 04/09/2015 =
 * Dev - Checkout fees/discounts on per product basis added.
