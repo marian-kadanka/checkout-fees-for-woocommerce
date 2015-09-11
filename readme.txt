@@ -20,8 +20,8 @@ Checkout fees and discounts can be added to **all payment gateways**, both:
 
 Fees and discounts can be set:
 
-* globally for all products, or
-* on per product basis.
+* **globally** for all products, or
+* on **per product** basis.
 
 Plugin requires **minimum setup**: after enabling the fee/discount for selected gateway (in WooCommerce > Settings > Checkout Fees), you can set:
 
@@ -32,8 +32,8 @@ Plugin requires **minimum setup**: after enabling the fee/discount for selected 
 * taxation options.
 
 = Feedback =
-* We are open to your suggestions and feedback - Thank you for using or trying out one of our plugins!
-* Drop us a line at http://www.algoritmika.com
+* We are open to your suggestions and feedback - drop us a line at http://www.algoritmika.com
+* Thank you for using or trying out one of our plugins!
 
 = More =
 * Visit the *Checkout Fees and Discounts for WooCommerce* plugin page at http://coder.fm/item/checkout-fees-for-woocommerce-plugin/
