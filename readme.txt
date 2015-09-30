@@ -3,7 +3,7 @@ Contributors: algoritmika,anbinder
 Tags: woocommerce,payment,gateway,fee,discount,checkout
 Requires at least: 3.8
 Tested up to: 4.3
-Stable tag: 1.1.1
+Stable tag: 1.2.0
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -23,7 +23,7 @@ Fees and discounts can be set:
 * **globally** for all products, or
 * on **per product** basis.
 
-Plugin requires **minimum setup**: after enabling the fee/discount for selected gateway (in WooCommerce > Settings > Checkout Fees), you can set:
+Plugin requires **minimum setup**: after enabling the fee/discount for selected gateway (in WooCommerce > Settings > Checkout Fees or per product), you can set:
 
 * fee/discount value,
 * fee/discount type: fixed or percent,
@@ -50,6 +50,10 @@ Plugin requires **minimum setup**: after enabling the fee/discount for selected 
 2. Setting checkout fees/discounts on per product basis.
 
 == Changelog ==
+
+= 1.2.0 - 30/09/2015 =
+* Dev - Checkout fees/discounts info on single product frontend page added.
+* Dev - `wp_loaded` filter instead of `woocommerce_init`.
 
 = 1.1.1 - 11/09/2015 =
 * Dev - Renaming from "Checkout Fees for WooCommerce" to "Checkout Fees and Discounts for WooCommerce".
