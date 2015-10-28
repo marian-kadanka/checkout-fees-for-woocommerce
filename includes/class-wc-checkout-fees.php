@@ -2,7 +2,7 @@
 /**
  * Checkout Fees for WooCommerce
  *
- * @version 1.2.0
+ * @version 1.3.0
  * @since   1.0.0
  * @author  Algoritmika Ltd.
  */
@@ -36,7 +36,7 @@ class Alg_WC_Checkout_Fees {
 	/**
 	 * show_checkout_fees_info.
 	 *
-	 * @version 1.2.0
+	 * @version 1.3.0
 	 * @since   1.2.0
 	 */
 	function show_checkout_fees_info() {
@@ -56,6 +56,8 @@ class Alg_WC_Checkout_Fees {
 				get_option( 'alg_gateways_fees_max_cart_amount_' . $current_gateway ),
 				get_option( 'alg_gateways_fees_value_'           . $current_gateway ),
 				get_option( 'alg_gateways_fees_type_'            . $current_gateway ),
+				get_option( 'alg_gateways_fees_value_2_'         . $current_gateway ),
+				get_option( 'alg_gateways_fees_type_2_'          . $current_gateway ),
 				get_option( 'alg_gateways_fees_round_'           . $current_gateway ),
 				get_option( 'alg_gateways_fees_round_precision_' . $current_gateway ),
 				get_option( 'alg_gateways_fees_is_taxable_'      . $current_gateway ),
@@ -73,6 +75,8 @@ class Alg_WC_Checkout_Fees {
 					get_post_meta( $product_id, '_' . 'alg_checkout_fees_max_cart_amount_'    . $current_gateway, true ),
 					get_post_meta( $product_id, '_' . 'alg_checkout_fees_value_'              . $current_gateway, true ),
 					get_post_meta( $product_id, '_' . 'alg_checkout_fees_type_'               . $current_gateway, true ),
+					get_post_meta( $product_id, '_' . 'alg_checkout_fees_value_2_'            . $current_gateway, true ),
+					get_post_meta( $product_id, '_' . 'alg_checkout_fees_type_2_'             . $current_gateway, true ),
 					get_post_meta( $product_id, '_' . 'alg_checkout_fees_rounding_enabled_'   . $current_gateway, true ),
 					get_post_meta( $product_id, '_' . 'alg_checkout_fees_rounding_precision_' . $current_gateway, true ),
 					get_post_meta( $product_id, '_' . 'alg_checkout_fees_tax_enabled_'        . $current_gateway, true ),
@@ -84,7 +88,7 @@ class Alg_WC_Checkout_Fees {
 				$the_product = wc_get_product( $product_id );
 				$the_price = $the_product->get_price();
 				$the_price_original = $the_price;
-				$fee_title = $fee_value = '';
+				$fee_title = $fee_value = $fee_value_2 = '';
 				if ( 0 != $global_fee ) {
 					if ( 'yes' === get_option( 'alg_gateways_fees_is_taxable_' . $current_gateway ) ) {
 						$tax_class_name = '';
@@ -102,10 +106,16 @@ class Alg_WC_Checkout_Fees {
 					$fee_value = ( 'percent' === get_option( 'alg_gateways_fees_type_' . $current_gateway ) ) ?
 						$fee_value . '%' :
 						wc_price( $fee_value );
+					$fee_value_2 .= get_option( 'alg_gateways_fees_value_2_' . $current_gateway );
+					$fee_value_2 = ( 'percent' === get_option( 'alg_gateways_fees_type_2_' . $current_gateway ) ) ?
+						$fee_value_2 . '%' :
+						wc_price( $fee_value_2 );
+					if ( '' != $fee_value_2 ) $fee_value_2 = ', ' . $fee_value_2;
+					$fee_value = $fee_value . $fee_value_2;
 
 					$the_price += $global_fee;
 				}
-				$fee_title_per_product = $fee_value_per_product = '';
+				$fee_title_per_product = $fee_value_per_product = $fee_value_2_per_product = '';
 				if ( 0 != $local_fee ) {
 					if ( 'yes' === get_post_meta( $product_id, '_' . 'alg_checkout_fees_tax_enabled_' . $current_gateway, true ) ) {
 						$tax_class_name = '';
@@ -123,6 +133,12 @@ class Alg_WC_Checkout_Fees {
 					$fee_value_per_product = ( 'percent' === get_post_meta( $product_id, '_' . 'alg_checkout_fees_type_' . $current_gateway, true ) ) ?
 						$fee_value_per_product . ' %' :
 						wc_price( $fee_value_per_product );
+					$fee_value_2_per_product .= get_post_meta( $product_id, '_' . 'alg_checkout_fees_value_2_' . $current_gateway, true );
+					$fee_value_2_per_product = ( 'percent' === get_post_meta( $product_id, '_' . 'alg_checkout_fees_type_2_' . $current_gateway, true ) ) ?
+						$fee_value_2_per_product . ' %' :
+						wc_price( $fee_value_2_per_product );
+					if ( '' != $fee_value_2_per_product ) $fee_value_2_per_product = ', ' . $fee_value_2_per_product;
+					$fee_value_per_product = $fee_value_per_product . $fee_value_2_per_product;
 
 					$the_price += $local_fee;
 				}
@@ -178,7 +194,7 @@ class Alg_WC_Checkout_Fees {
 	/**
 	 * add_gateways_fees.
 	 *
-	 * @version 1.1.0
+	 * @version 1.3.0
 	 */
 	function add_gateways_fees( $the_cart ) {
 		global $woocommerce;
@@ -203,6 +219,8 @@ class Alg_WC_Checkout_Fees {
 			get_option( 'alg_gateways_fees_max_cart_amount_' . $current_gateway ),
 			get_option( 'alg_gateways_fees_value_'           . $current_gateway ),
 			get_option( 'alg_gateways_fees_type_'            . $current_gateway ),
+			get_option( 'alg_gateways_fees_value_2_'         . $current_gateway ),
+			get_option( 'alg_gateways_fees_type_2_'          . $current_gateway ),
 			get_option( 'alg_gateways_fees_round_'           . $current_gateway ),
 			get_option( 'alg_gateways_fees_round_precision_' . $current_gateway ),
 			get_option( 'alg_gateways_fees_is_taxable_'      . $current_gateway ),
@@ -220,6 +238,8 @@ class Alg_WC_Checkout_Fees {
 					get_post_meta( $values['product_id'], '_' . 'alg_checkout_fees_max_cart_amount_'    . $current_gateway, true ),
 					get_post_meta( $values['product_id'], '_' . 'alg_checkout_fees_value_'              . $current_gateway, true ),
 					get_post_meta( $values['product_id'], '_' . 'alg_checkout_fees_type_'               . $current_gateway, true ),
+					get_post_meta( $values['product_id'], '_' . 'alg_checkout_fees_value_2_'            . $current_gateway, true ),
+					get_post_meta( $values['product_id'], '_' . 'alg_checkout_fees_type_2_'             . $current_gateway, true ),
 					get_post_meta( $values['product_id'], '_' . 'alg_checkout_fees_rounding_enabled_'   . $current_gateway, true ),
 					get_post_meta( $values['product_id'], '_' . 'alg_checkout_fees_rounding_precision_' . $current_gateway, true ),
 					get_post_meta( $values['product_id'], '_' . 'alg_checkout_fees_tax_enabled_'        . $current_gateway, true ),
@@ -232,10 +252,10 @@ class Alg_WC_Checkout_Fees {
 	/**
 	 * get_the_fee.
 	 *
-	 * @version 1.2.0
+	 * @version 1.3.0
 	 * @since   1.2.0
 	 */
-	function get_the_fee( $current_gateway, $is_enabled, $fee_text, $min_cart_amount, $max_cart_amount, $fee_value, $fee_type, $do_round, $precision ) {
+	function get_the_fee( $current_gateway, $is_enabled, $fee_text, $min_cart_amount, $max_cart_amount, $fee_value, $fee_type, $fee_value_2, $fee_type_2, $do_round, $precision ) {
 		$final_fee_to_add = 0;
 		if ( '' != $current_gateway && 'yes' === $is_enabled ) {
 			global $woocommerce;
@@ -253,6 +273,18 @@ class Alg_WC_Checkout_Fees {
 						}
 						break;
 				}
+				if ( 0 == $fee_value_2 ) return $final_fee_to_add;
+				switch ( $fee_type_2 ) {
+					case 'fixed':
+						$final_fee_to_add += $fee_value_2;
+						break;
+					case 'percent':
+						$final_fee_to_add += ( $fee_value_2 / 100 ) * $total_in_cart;
+						if ( 'yes' === $do_round ) {
+							$final_fee_to_add = round( $final_fee_to_add, $precision );
+						}
+						break;
+				}
 			}
 		}
 		return $final_fee_to_add;
@@ -261,11 +293,11 @@ class Alg_WC_Checkout_Fees {
 	/**
 	 * maybe_add_cart_fee.
 	 *
-	 * @version 1.2.0
+	 * @version 1.3.0
 	 * @since   1.1.0
 	 */
-	function maybe_add_cart_fee( $current_gateway, $is_enabled, $fee_text, $min_cart_amount, $max_cart_amount, $fee_value, $fee_type, $do_round, $precision, $is_taxable, $tax_class_id ) {
-		$final_fee_to_add = $this->get_the_fee( $current_gateway, $is_enabled, $fee_text, $min_cart_amount, $max_cart_amount, $fee_value, $fee_type, $do_round, $precision );
+	function maybe_add_cart_fee( $current_gateway, $is_enabled, $fee_text, $min_cart_amount, $max_cart_amount, $fee_value, $fee_type, $fee_value_2, $fee_type_2, $do_round, $precision, $is_taxable, $tax_class_id ) {
+		$final_fee_to_add = $this->get_the_fee( $current_gateway, $is_enabled, $fee_text, $min_cart_amount, $max_cart_amount, $fee_value, $fee_type, $fee_value_2, $fee_type_2, $do_round, $precision );
 		if ( 0 != $final_fee_to_add ) {
 			global $woocommerce;
 			$taxable = ( 'yes' === $is_taxable ) ? true : false;

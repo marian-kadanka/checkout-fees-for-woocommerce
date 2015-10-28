@@ -2,7 +2,7 @@
 /**
  * Checkout Fees for WooCommerce - Gateways Section(s) Settings
  *
- * @version 1.2.0
+ * @version 1.3.0
  * @since   1.0.0
  * @author  Algoritmika Ltd.
  */
@@ -60,7 +60,7 @@ class Alg_WC_Checkout_Fees_Settings_Gateways {
 	/**
 	 * add_gateway_fees_settings.
 	 *
-	 * @version 1.1.0
+	 * @version 1.3.0
 	 */
 	function add_gateway_fees_settings() {
 
@@ -99,7 +99,7 @@ class Alg_WC_Checkout_Fees_Settings_Gateways {
 			),
 
 			array(
-				'title'     => __( 'Type', 'alg-woocommerce-fees' ),
+				'title'     => __( 'Fee Type', 'alg-woocommerce-fees' ),
 				'desc'      => __( 'Fee (or discount) type.', 'alg-woocommerce-fees' ),
 				'desc_tip'  => __( 'Percent or fixed value.', 'alg-woocommerce-fees' ),
 				'id'        => 'alg_gateways_fees_type_' . $key,
@@ -112,10 +112,33 @@ class Alg_WC_Checkout_Fees_Settings_Gateways {
 			),
 
 			array(
-				'title'     => __( 'Value', 'alg-woocommerce-fees' ),
+				'title'     => __( 'Fee Value', 'alg-woocommerce-fees' ),
 				'desc'      => __( 'Fee (or discount) value.', 'alg-woocommerce-fees' ),
 				'desc_tip'  => __( 'The value. For discount enter a negative number.', 'alg-woocommerce-fees' ),
 				'id'        => 'alg_gateways_fees_value_' . $key,
+				'default'   => 0,
+				'type'      => 'number',
+				'custom_attributes' => array( 'step' => '0.0001', ),
+			),
+
+			array(
+				'title'     => __( 'Additional Fee Type (Optional)', 'alg-woocommerce-fees' ),
+				'desc'      => __( 'Fee (or discount) type.', 'alg-woocommerce-fees' ),
+				'desc_tip'  => __( 'Percent or fixed value.', 'alg-woocommerce-fees' ),
+				'id'        => 'alg_gateways_fees_type_2_' . $key,
+				'default'   => 'fixed',
+				'type'      => 'select',
+				'options'   => array(
+					'fixed'   => __( 'Fixed', 'alg-woocommerce-fees' ),
+					'percent' => __( 'Percent', 'alg-woocommerce-fees' ),
+				),
+			),
+
+			array(
+				'title'     => __( 'Additional Fee Value (Optional)', 'alg-woocommerce-fees' ),
+				'desc'      => __( 'Fee (or discount) value.', 'alg-woocommerce-fees' ),
+				'desc_tip'  => __( 'The value. For discount enter a negative number.', 'alg-woocommerce-fees' ),
+				'id'        => 'alg_gateways_fees_value_2_' . $key,
 				'default'   => 0,
 				'type'      => 'number',
 				'custom_attributes' => array( 'step' => '0.0001', ),

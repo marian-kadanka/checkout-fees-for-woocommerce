@@ -2,7 +2,7 @@
 /**
  * Checkout Fees for WooCommerce - Per Product Meta Boxes
  *
- * @version 1.1.0
+ * @version 1.3.0
  * @since   1.1.0
  * @author  Algoritmika Ltd.
  */
@@ -46,6 +46,8 @@ class Alg_WC_Checkout_Fees_Settings_Per_Product {
 
 	/**
 	 * get_meta_box_options.
+	 *
+	 * @version 1.3.0
 	 */
 	function get_meta_box_options() {
 		return array(
@@ -65,7 +67,7 @@ class Alg_WC_Checkout_Fees_Settings_Per_Product {
 				'name'    => 'alg_checkout_fees_type',
 				'default' => '',
 				'type'    => 'select',
-				'title'   => __( 'Type', 'alg-woocommerce-fees' ),
+				'title'   => __( 'Fee Type', 'alg-woocommerce-fees' ),
 				'options'   => array(
 					'fixed'   => __( 'Fixed', 'alg-woocommerce-fees' ),
 					'percent' => __( 'Percent', 'alg-woocommerce-fees' ),
@@ -75,7 +77,24 @@ class Alg_WC_Checkout_Fees_Settings_Per_Product {
 				'name'    => 'alg_checkout_fees_value',
 				'default' => '',
 				'type'    => 'number',
-				'title'   => __( 'Value', 'alg-woocommerce-fees' ),
+				'title'   => __( 'Fee Value', 'alg-woocommerce-fees' ),
+				'custom_atts' => ' step="0.0001"',
+			),
+			array(
+				'name'    => 'alg_checkout_fees_type_2',
+				'default' => '',
+				'type'    => 'select',
+				'title'   => __( 'Additional Fee Type (Optional)', 'alg-woocommerce-fees' ),
+				'options'   => array(
+					'fixed'   => __( 'Fixed', 'alg-woocommerce-fees' ),
+					'percent' => __( 'Percent', 'alg-woocommerce-fees' ),
+				),
+			),
+			array(
+				'name'    => 'alg_checkout_fees_value_2',
+				'default' => '',
+				'type'    => 'number',
+				'title'   => __( 'Additional Fee Value (Optional)', 'alg-woocommerce-fees' ),
 				'custom_atts' => ' step="0.0001"',
 			),
 			array(

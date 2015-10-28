@@ -3,7 +3,7 @@ Contributors: algoritmika,anbinder
 Tags: woocommerce,payment,gateway,fee,discount,checkout
 Requires at least: 3.8
 Tested up to: 4.3
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -50,6 +50,9 @@ Plugin requires **minimum setup**: after enabling the fee/discount for selected 
 2. Setting checkout fees/discounts on per product basis.
 
 == Changelog ==
+
+= 1.3.0 - 27/10/2015 =
+* Dev - Second optional fee added.
 
 = 1.2.0 - 30/09/2015 =
 * Dev - Checkout fees/discounts info on single product frontend page added.
