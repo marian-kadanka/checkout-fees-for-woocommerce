@@ -3,10 +3,10 @@
 Plugin Name: Checkout Fees and Discounts for WooCommerce
 Plugin URI: http://coder.fm/item/checkout-fees-for-woocommerce-plugin/
 Description: WooCommerce Payment Gateways Fees and Discounts.
-Version: 1.3.0
+Version: 2.0.0
 Author: Algoritmika Ltd
 Author URI: http://www.algoritmika.com
-Copyright: © 2015 Algoritmika Ltd.
+Copyright: © 2016 Algoritmika Ltd.
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 */
@@ -25,7 +25,8 @@ if ( ! class_exists( 'Alg_Woocommerce_Checkout_Fees' ) ) :
 /**
  * Main Alg_Woocommerce_Checkout_Fees Class
  *
- * @class Alg_Woocommerce_Checkout_Fees
+ * @version 2.0.0
+ * @class   Alg_Woocommerce_Checkout_Fees
  */
 
 final class Alg_Woocommerce_Checkout_Fees {
@@ -51,7 +52,9 @@ final class Alg_Woocommerce_Checkout_Fees {
 
 	/**
 	 * Alg_Woocommerce_Checkout_Fees Constructor.
-	 * @access public
+	 *
+	 * @version 2.0.0
+	 * @access  public
 	 */
 	public function __construct() {
 
@@ -60,10 +63,11 @@ final class Alg_Woocommerce_Checkout_Fees {
 
 		add_action( 'init', array( $this, 'init' ), 0 );
 
-		// Settings
 		if ( is_admin() ) {
 			add_filter( 'woocommerce_get_settings_pages',                     array( $this, 'add_woocommerce_settings_tab' ) );
 			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'action_links' ) );
+
+			require_once( 'includes/admin/admin-functions.php' );
 		}
 	}
 
@@ -151,12 +155,13 @@ endif;
 /**
  * Returns the main instance of Alg_Woocommerce_Checkout_Fees to prevent the need to use globals.
  *
+ * @version 2.0.0
  * @return Alg_Woocommerce_Checkout_Fees
  */
-if ( ! function_exists( 'Create_Alg_Woocommerce_Checkout_Fees' ) ) {
-	function Create_Alg_Woocommerce_Checkout_Fees() {
+if ( ! function_exists( 'create_alg_woocommerce_checkout_fees' ) ) {
+	function create_alg_woocommerce_checkout_fees() {
 		return Alg_Woocommerce_Checkout_Fees::instance();
 	}
 }
 
-Create_Alg_Woocommerce_Checkout_Fees();
+create_alg_woocommerce_checkout_fees();

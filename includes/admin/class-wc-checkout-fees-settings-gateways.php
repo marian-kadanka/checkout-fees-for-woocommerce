@@ -2,7 +2,7 @@
 /**
  * Checkout Fees for WooCommerce - Gateways Section(s) Settings
  *
- * @version 1.3.0
+ * @version 2.0.0
  * @since   1.0.0
  * @author  Algoritmika Ltd.
  */
@@ -60,7 +60,7 @@ class Alg_WC_Checkout_Fees_Settings_Gateways {
 	/**
 	 * add_gateway_fees_settings.
 	 *
-	 * @version 1.3.0
+	 * @version 2.0.0
 	 */
 	function add_gateway_fees_settings() {
 
@@ -71,6 +71,18 @@ class Alg_WC_Checkout_Fees_Settings_Gateways {
 		$key = $_GET['section'];
 		if ( ! isset( $available_gateways[ $key ] ) ) return array();
 		$gateway = $available_gateways[ $key ];
+
+		// Countries
+		$countries = alg_checkout_fees_get_countries();
+
+		// Cats
+		$product_cats = array();
+		$product_categories = get_terms( 'product_cat', 'orderby=name&hide_empty=0' );
+		if ( ! empty( $product_categories ) && ! is_wp_error( $product_categories ) ){
+			foreach ( $product_categories as $product_category ) {
+				$product_cats[ $product_category->term_id ] = $product_category->name;
+			}
+		}
 
 		// Adding settings
 		$settings = array(
@@ -119,6 +131,15 @@ class Alg_WC_Checkout_Fees_Settings_Gateways {
 				'default'   => 0,
 				'type'      => 'number',
 				'custom_attributes' => array( 'step' => '0.0001', ),
+			),
+
+			array(
+				'title'     => __( 'Additional Fee Title (Optional)', 'alg-woocommerce-fees' ),
+				'desc'      => __( 'Fee (or discount) title to show to customer.', 'alg-woocommerce-fees' ),
+				'desc_tip'  => __( 'To display each (i.e. main and additional) fees on different lines in cart (and checkout), you must set different titles. If titles are equal they will be merged into single line.', 'alg-woocommerce-fees' ),
+				'id'        => 'alg_gateways_fees_text_2_' . $key,
+				'default'   => '',
+				'type'      => 'text',
 			),
 
 			array(
@@ -196,6 +217,86 @@ class Alg_WC_Checkout_Fees_Settings_Gateways {
 				'default'   => '',
 				'type'      => 'select',
 				'options'   => array_merge( array( __( 'Standard Rate', 'alg-woocommerce-fees' ) ), WC_Tax::get_tax_classes() ),
+			),
+
+			array(
+				'title'     => __( 'Exclude Shipping', 'alg-woocommerce-fees' ),
+				'desc'      => __( 'Exclude shipping from total cart sum, when calculating fees.', 'alg-woocommerce-fees' ),
+				'id'        => 'alg_gateways_fees_exclude_shipping_' . $key,
+				'default'   => 'no',
+				'type'      => 'checkbox',
+			),
+
+			array(
+				'title'     => __( 'Customer Countries', 'alg-woocommerce-fees' ),
+				'desc'      => __( 'Countries to include.', 'alg-woocommerce-fees' ) .
+					apply_filters(
+						'alg_wc_checkout_fees_option',
+						' '
+						. __( 'Get <a target="_blank" href="http://coder.fm/item/checkout-fees-for-woocommerce-plugin/">Checkout Fees for WooCommerce plugin page</a> to change value.', 'alg-woocommerce-fees' )
+					),
+				'desc_tip'  => __( 'Fee (or discount) will only be added if customer\'s country is in the list. Leave blank to disable.', 'alg-woocommerce-fees' ),
+				'id'        => 'alg_gateways_fees_countries_include_' . $key,
+				'default'   => '',
+				'type'      => 'multiselect',
+				'class'     => 'chosen_select',
+				'css'       => 'width: 450px;',
+				'options'   => $countries,
+				'custom_attributes' => apply_filters( 'alg_wc_checkout_fees_option', array( 'disabled' => 'disabled' ) ),
+			),
+
+			array(
+				'title'     => __( '', 'alg-woocommerce-fees' ),
+				'desc'      => __( 'Countries to exclude.', 'alg-woocommerce-fees' ) .
+					apply_filters(
+						'alg_wc_checkout_fees_option',
+						' '
+						. __( 'Get <a target="_blank" href="http://coder.fm/item/checkout-fees-for-woocommerce-plugin/">Checkout Fees for WooCommerce plugin page</a> to change value.', 'alg-woocommerce-fees' )
+					),
+				'desc_tip'  => __( 'Fee (or discount) will only be added if customer\'s country is NOT in the list. Leave blank to disable.', 'alg-woocommerce-fees' ),
+				'id'        => 'alg_gateways_fees_countries_exclude_' . $key,
+				'default'   => '',
+				'type'      => 'multiselect',
+				'class'     => 'chosen_select',
+				'css'       => 'width: 450px;',
+				'options'   => $countries,
+				'custom_attributes' => apply_filters( 'alg_wc_checkout_fees_option', array( 'disabled' => 'disabled' ) ),
+			),
+
+			array(
+				'title'     => __( 'Product Categories', 'alg-woocommerce-fees' ),
+				'desc'      => __( 'Categories to include.', 'alg-woocommerce-fees' ) .
+					apply_filters(
+						'alg_wc_checkout_fees_option',
+						' '
+						. __( 'Get <a target="_blank" href="http://coder.fm/item/checkout-fees-for-woocommerce-plugin/">Checkout Fees for WooCommerce plugin page</a> to change value.', 'alg-woocommerce-fees' )
+					),
+				'desc_tip'  => __( 'Fee (or discount) will only be added if product of selected category(-ies) is in the cart. Leave blank to disable.', 'alg-woocommerce-fees' ),
+				'id'        => 'alg_gateways_fees_cats_include_' . $key,
+				'default'   => '',
+				'type'      => 'multiselect',
+				'class'     => 'chosen_select',
+				'css'       => 'width: 450px;',
+				'options'   => $product_cats,
+				'custom_attributes' => apply_filters( 'alg_wc_checkout_fees_option', array( 'disabled' => 'disabled' ) ),
+			),
+
+			array(
+				'title'     => __( '', 'alg-woocommerce-fees' ),
+				'desc'      => __( 'Categories to exclude.', 'alg-woocommerce-fees' ) .
+					apply_filters(
+						'alg_wc_checkout_fees_option',
+						' '
+						. __( 'Get <a target="_blank" href="http://coder.fm/item/checkout-fees-for-woocommerce-plugin/">Checkout Fees for WooCommerce plugin page</a> to change value.', 'alg-woocommerce-fees' )
+					),
+				'desc_tip'  => __( 'Fee (or discount) will only be added if NO product of selected category(-ies) is in the cart. Leave blank to disable.', 'alg-woocommerce-fees' ),
+				'id'        => 'alg_gateways_fees_cats_exclude_' . $key,
+				'default'   => '',
+				'type'      => 'multiselect',
+				'class'     => 'chosen_select',
+				'css'       => 'width: 450px;',
+				'options'   => $product_cats,
+				'custom_attributes' => apply_filters( 'alg_wc_checkout_fees_option', array( 'disabled' => 'disabled' ) ),
 			),
 
 			array(

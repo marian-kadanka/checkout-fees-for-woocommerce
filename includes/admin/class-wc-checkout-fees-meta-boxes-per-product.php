@@ -2,7 +2,7 @@
 /**
  * Checkout Fees for WooCommerce - Per Product Meta Boxes
  *
- * @version 1.3.0
+ * @version 2.0.0
  * @since   1.1.0
  * @author  Algoritmika Ltd.
  */
@@ -39,15 +39,18 @@ class Alg_WC_Checkout_Fees_Settings_Per_Product {
 
 	/**
 	 * enqueue_styles.
+	 *
+	 * @version 2.0.0
 	 */
 	function enqueue_styles() {
 		wp_enqueue_style( 'checkout-fees-admin' );
+		wp_enqueue_script( 'checkout-fees-admin-js', plugins_url( 'css/checkout-fees-admin.js', __FILE__ ) );
 	}
 
 	/**
 	 * get_meta_box_options.
 	 *
-	 * @version 1.3.0
+	 * @version 2.0.0
 	 */
 	function get_meta_box_options() {
 		return array(
@@ -79,6 +82,12 @@ class Alg_WC_Checkout_Fees_Settings_Per_Product {
 				'type'    => 'number',
 				'title'   => __( 'Fee Value', 'alg-woocommerce-fees' ),
 				'custom_atts' => ' step="0.0001"',
+			),
+			array(
+				'name'    => 'alg_checkout_fees_title_2',
+				'default' => '',
+				'type'    => 'text',
+				'title'   => __( 'Additional Fee/Discount', 'alg-woocommerce-fees' ) . ' ' . __( 'Title', 'alg-woocommerce-fees' ) . ' ' . __( '(Optional)', 'alg-woocommerce-fees' ),
 			),
 			array(
 				'name'    => 'alg_checkout_fees_type_2',
@@ -137,14 +146,41 @@ class Alg_WC_Checkout_Fees_Settings_Per_Product {
 				'title'   => __( 'Tax Class', 'alg-woocommerce-fees' ),
 				'options' => array_merge( array( __( 'Standard Rate', 'alg-woocommerce-fees' ) ), WC_Tax::get_tax_classes() ),
 			),
+			array(
+				'name'    => 'alg_checkout_fees_exclude_shipping',
+				'default' => '',
+				'type'    => 'checkbox',
+				'title'   => __( 'Exclude Shipping', 'alg-woocommerce-fees' ),
+			),
+			array(
+				'name'    => 'alg_checkout_fees_percent_usage',
+				'default' => 'for_all_cart',
+				'type'    => 'select',
+				'title'   => __( 'Fee Calculation (for Percent Fees)', 'alg-woocommerce-fees' ),
+				'options' => array(
+					'for_all_cart' => __( 'For all cart', 'alg-woocommerce-fees' ),
+					'by_product'   => __( 'Only for current product', 'alg-woocommerce-fees' ),
+				),
+			),
+			array(
+				'name'    => 'alg_checkout_fees_fixed_usage',
+				'default' => 'once',
+				'type'    => 'select',
+				'title'   => __( 'Fee Calculation (for Fixed Fees)', 'alg-woocommerce-fees' ),
+				'options' => array(
+					'once'         => __( 'Once', 'alg-woocommerce-fees' ),
+					'by_quantity'  => __( 'Multiply by product quantity', 'alg-woocommerce-fees' ),
+				),
+			),
 		);
 	}
 
 	/**
 	 * save_meta_box.
+	 *
+	 * @version 2.0.0
 	 */
 	function save_meta_box( $post_id, $post ) {
-
 		// Check if we are saving with current metabox displayed
 		if ( ! isset( $_POST[ 'alg_checkout_fees_' . $this->id . '_save_post' ] ) ) {
 			return;
@@ -152,13 +188,16 @@ class Alg_WC_Checkout_Fees_Settings_Per_Product {
 		 // Save options
 		global $woocommerce;
 		$available_gateways = $woocommerce->payment_gateways->payment_gateways();
-		$gateway_key = 'bacs';
-		$gateway = $available_gateways[ $gateway_key ];
-		foreach ( $this->get_meta_box_options() as $option ) {
-			$option_name = $option['name'] . '_' . $gateway_key;
-			$option_value = isset( $_POST[ $option_name ] ) ? $_POST[ $option_name ] : $option['default'];
-			if ( 'checkbox' === $option['type'] ) $option_value = ( '' == $option_value ) ? 'no' : 'yes';
-			update_post_meta( $post_id, '_' . $option_name, $option_value );
+		foreach ( $available_gateways as $gateway_key => $gateway ) {
+			if ( 'bacs' != $gateway_key && 'bacs' === apply_filters( 'alg_wc_checkout_fees_option', 'bacs' ) ) {
+				continue;
+			}
+			foreach ( $this->get_meta_box_options() as $option ) {
+				$option_name = $option['name'] . '_' . $gateway_key;
+				$option_value = isset( $_POST[ $option_name ] ) ? $_POST[ $option_name ] : $option['default'];
+				if ( 'checkbox' === $option['type'] ) $option_value = ( '' == $option_value ) ? 'no' : 'yes';
+				update_post_meta( $post_id, '_' . $option_name, $option_value );
+			}
 		}
 	}
 
@@ -178,6 +217,8 @@ class Alg_WC_Checkout_Fees_Settings_Per_Product {
 
 	/**
 	 * create_meta_box.
+	 *
+	 * @version 2.0.0
 	 */
 	function create_meta_box() {
 
@@ -190,10 +231,12 @@ class Alg_WC_Checkout_Fees_Settings_Per_Product {
 
 			// Tab Labels
 			$html .= '<li class="labels">';
+			$i = 0;
 			foreach ( $available_gateways as $gateway_key => $gateway ) {
+				$i++;
 				$gateway_title = ( '' == $gateway->title ) ? $gateway_key : $gateway->title;
-				$html .= '<label for="tab-' . $gateway_key . '" id="label-' . $gateway_key . '">' . $gateway_title . '</label>';
-
+				$label_class = ( 1 == $i ) ? 'alg-clicked' : '';
+				$html .= '<label for="tab-' . $gateway_key . '" id="label-' . $gateway_key . '" class="' . $label_class . '">' . $gateway_title . '</label>';
 			}
 			$html .= '</li>';
 
@@ -205,20 +248,20 @@ class Alg_WC_Checkout_Fees_Settings_Per_Product {
 					$gateway_title = ( '' == $gateway->title ) ? $gateway_key : $gateway->title;
 					$html .= '<input type="radio" id="tab-' . $gateway_key . '" name="tabs"' . checked( $i, 1, false ) . '>';
 					$html .= '<div class="tab-content" id="tab-content-' . $gateway_key . '">';
-						$html .= ( 1 != $i ) ? '<div>'
+						$html .= ( 1 != $i && 'bacs' === apply_filters( 'alg_wc_checkout_fees_option', 'bacs' ) ) ? '<div>'
 							. __( 'In free version only Direct Bank Transfer (BACS) fees are available on per product basis.', 'alg-woocommerce-fees' ) . ' '
-							. __( 'Please visit <a href="http://coder.fm/item/checkout-fees-for-woocommerce-plugin/">Checkout Fees for WooCommerce plugin page</a>.', 'alg-woocommerce-fees' )
+							. __( 'Please visit <a target="_blank" href="http://coder.fm/item/checkout-fees-for-woocommerce-plugin/">Checkout Fees for WooCommerce plugin page</a>.', 'alg-woocommerce-fees' )
 							. '</div>' : '';
 						$html .= '<table>';
 						foreach ( $this->get_meta_box_options() as $option ) {
 							if ( ! isset( $option['custom_atts'] ) ) $option['custom_atts'] = '';
-							$option['custom_atts'] = ( 'bacs' != $gateway_key ) ? ' readonly="readonly"' : '';
+							$option['custom_atts'] = ( 'bacs' != $gateway_key && 'bacs' === apply_filters( 'alg_wc_checkout_fees_option', 'bacs' ) ) ? ' readonly="readonly"' : '';
 							$option_name = $option['name'] . '_' . $gateway_key;
 							$option_value = get_post_meta( $current_post_id, '_' . $option_name, true );
 							$option_title = ( '' == $option['title'] ) ? '<span style="font-size:large;font-weight:bold;">' . $gateway_title . '</span>' : $option['title'];
 							if ( 'checkbox' === $option['type'] ) {
 								$option['custom_atts'] .= checked( $option_value, 'yes', false );
-								$option['custom_atts'] .= ( 'bacs' != $gateway_key ) ? ' disabled="disabled"' : '';
+								$option['custom_atts'] .= ( 'bacs' != $gateway_key && 'bacs' === apply_filters( 'alg_wc_checkout_fees_option', 'bacs' ) ) ? ' disabled="disabled"' : '';
 							}
 							$input_ending = ' id="' . $option_name . '" name="' . $option_name . '" value="' . $option_value . '"' . $option['custom_atts'] . '>';
 							$select_options = '';
@@ -233,14 +276,14 @@ class Alg_WC_Checkout_Fees_Settings_Per_Product {
 									$field_html = '<input class="short" type="' . $option['type'] . '"' . $input_ending . ' ' . __( 'Enable', 'alg-woocommerce-fees' );
 									break;
 								case 'text':
-									$field_html = '<input class="short" type="' . $option['type'] . '"' . $input_ending;
+									$field_html = '<input style="min-width:300px;" class="short" type="' . $option['type'] . '"' . $input_ending;
 									break;
 								case 'number':
-									$field_html = '<input class="short" type="' . $option['type'] . '"' . $input_ending;
+									$field_html = '<input style="min-width:300px;" class="short" type="' . $option['type'] . '"' . $input_ending;
 									break;
 								case 'select':
-									$ro = ( 'bacs' != $gateway_key ) ? ' disabled="disabled"' : '';
-									$field_html = '<select name="' . $option_name . '" id="' . $option_name . '" style="" class=""' . $ro . '>' . $select_options . '</select>';
+									$ro = ( 'bacs' != $gateway_key && 'bacs' === apply_filters( 'alg_wc_checkout_fees_option', 'bacs' ) ) ? ' disabled="disabled"' : '';
+									$field_html = '<select style="min-width:300px;" name="' . $option_name . '" id="' . $option_name . '" style="" class=""' . $ro . '>' . $select_options . '</select>';
 									break;
 							}
 							$html .= '<tr>';
@@ -255,6 +298,7 @@ class Alg_WC_Checkout_Fees_Settings_Per_Product {
 		$html .= '</ul>';
 		echo $html;
 		echo '<input type="hidden" name="alg_checkout_fees_' . $this->id . '_save_post" value="alg_checkout_fees_' . $this->id . '_save_post">';
+
 	}
 
 }

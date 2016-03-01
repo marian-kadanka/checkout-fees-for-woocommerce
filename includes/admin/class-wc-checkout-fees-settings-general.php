@@ -2,7 +2,7 @@
 /**
  * Checkout Fees for WooCommerce - General Section Settings
  *
- * @version 1.2.0
+ * @version 2.0.0
  * @since   1.0.0
  * @author  Algoritmika Ltd.
  */
@@ -36,7 +36,7 @@ class Alg_WC_Checkout_Fees_Settings_General {
 	/**
 	 * get_settings.
 	 *
-	 * @version 1.2.0
+	 * @version 2.0.0
 	 */
 	function get_settings() {
 
@@ -78,19 +78,50 @@ class Alg_WC_Checkout_Fees_Settings_General {
 			),
 
 			array(
+				'title'     => __( 'Add Product Title to Fee/Discount Title', 'alg-woocommerce-fees' ),
+				'desc'      => __( 'Add', 'alg-woocommerce-fees' ),
+				'desc_tip'  => __( 'This can help when you adding fees/discounts for variable products.', 'alg-woocommerce-fees' ),
+				'id'        => 'alg_woocommerce_checkout_fees_per_product_add_product_name',
+				'default'   => 'no',
+				'type'      => 'checkbox',
+			),
+
+			array(
 				'type'      => 'sectionend',
 				'id'        => 'alg_woocommerce_checkout_fees_per_product_options',
 			),
 
 			array(
+				'title'     => __( 'Cart Options', 'alg-woocommerce-fees' ),
+				'type'      => 'title',
+				'id'        => 'alg_woocommerce_checkout_fees_cart_options',
+			),
+
+			array(
+				'title'     => __( 'Hide Gateways Fees and Discounts on Cart Page', 'alg-woocommerce-fees' ),
+				'desc'      => __( 'Hide', 'alg-woocommerce-fees' ),
+				'id'        => 'alg_woocommerce_checkout_fees_hide_on_cart',
+				'default'   => 'no',
+				'type'      => 'checkbox',
+			),
+
+			array(
+				'type'      => 'sectionend',
+				'id'        => 'alg_woocommerce_checkout_fees_cart_options',
+			),
+
+			array(
 				'title'     => __( 'Info on Single Product', 'alg-woocommerce-fees' ),
 				'type'      => 'title',
+				'desc'      => __( 'Replacement values in templates below are: %gateway_title%, %gateway_description%, %gateway_icon%, %product_title%, %product_gateway_price%, %product_variation_atts%, %product_original_price%, %product_price_diff%.', 'alg-woocommerce-fees' )
+					. '<br>' .
+					__( 'You can also use <em>[alg_show_checkout_fees_full_info]</em> and <em>[alg_show_checkout_fees_lowest_price_info]</em> shortcodes. Or <em>do_shortcode( \'[alg_show_checkout_fees_full_info]\' );</em> and <em>do_shortcode( \'[alg_show_checkout_fees_lowest_price_info]\' );</em> functions.', 'alg-woocommerce-fees' ),
 				'id'        => 'alg_woocommerce_checkout_fees_info_options',
 			),
 
 			array(
 				'title'     => __( 'Info on Single Product Page', 'alg-woocommerce-fees' ),
-				'desc'      => __( 'Enable', 'alg-woocommerce-fees' ),
+				'desc'      => __( 'Show', 'alg-woocommerce-fees' ),
 				'desc_tip'  => __( 'This will add gateway fee/discount info on single product frontend page.', 'alg-woocommerce-fees' ),
 				'id'        => 'alg_woocommerce_checkout_fees_info_enabled',
 				'default'   => 'no',
@@ -108,7 +139,7 @@ class Alg_WC_Checkout_Fees_Settings_General {
 			array(
 				'title'     => __( 'Row Template HTML', 'alg-woocommerce-fees' ),
 				'id'        => 'alg_woocommerce_checkout_fees_info_row_template',
-				'default'   => '<tr><td><strong>%gateway_title%</strong></td><td>%gateway_fee_title%</td><td>%product_original_price%</td><td>%product_gateway_price%</td><td>%product_price_diff%</td></tr>',
+				'default'   => '<tr><td><strong>%gateway_title%</strong></td><td>%product_original_price%</td><td>%product_gateway_price%</td><td>%product_price_diff%</td></tr>',
 				'type'      => 'textarea',
 				'css'       => 'width:100%;height:50px;',
 			),
@@ -136,6 +167,42 @@ class Alg_WC_Checkout_Fees_Settings_General {
 			array(
 				'title'     => __( 'Position Order', 'alg-woocommerce-fees' ),
 				'id'        => 'alg_woocommerce_checkout_fees_info_hook_priority',
+				'default'   => 20,
+				'type'      => 'number',
+			),
+
+			array(
+				'title'     => __( 'Lowest Price Info on Single Product Page', 'alg-woocommerce-fees' ),
+				'desc'      => __( 'Show', 'alg-woocommerce-fees' ),
+				'desc_tip'  => __( 'This will add gateway fee/discount lowest price info on single product frontend page.', 'alg-woocommerce-fees' ),
+				'id'        => 'alg_woocommerce_checkout_fees_lowest_price_info_enabled',
+				'default'   => 'no',
+				'type'      => 'checkbox',
+			),
+
+			array(
+				'title'     => __( 'Template HTML', 'alg-woocommerce-fees' ),
+				'id'        => 'alg_woocommerce_checkout_fees_lowest_price_info_template',
+				'default'   => '<p><strong>%gateway_title%</strong> %product_gateway_price% (%product_price_diff%)</p>',
+				'type'      => 'textarea',
+				'css'       => 'width:100%;height:50px;',
+			),
+
+			array(
+				'title'     => __( 'Position', 'alg-woocommerce-fees' ),
+				'id'        => 'alg_woocommerce_checkout_fees_lowest_price_info_hook',
+				'default'   => 'woocommerce_single_product_summary',
+				'type'      => 'select',
+				'options'   => array(
+					'woocommerce_single_product_summary'        => __( 'Inside product summary', 'alg-woocommerce-fees' ),
+					'woocommerce_before_single_product_summary' => __( 'Before product summary', 'alg-woocommerce-fees' ),
+					'woocommerce_after_single_product_summary'  => __( 'After product summary',  'alg-woocommerce-fees' ),
+				),
+			),
+
+			array(
+				'title'     => __( 'Position Order', 'alg-woocommerce-fees' ),
+				'id'        => 'alg_woocommerce_checkout_fees_lowest_price_info_hook_priority',
 				'default'   => 20,
 				'type'      => 'number',
 			),
