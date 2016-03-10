@@ -3,7 +3,7 @@ Contributors: algoritmika
 Tags: woocommerce,payment,gateway,fee,discount
 Requires at least: 3.8
 Tested up to: 4.4
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -27,12 +27,16 @@ Plugin requires **minimum setup**: after enabling the fee/discount for selected 
 
 * fee/discount value,
 * fee/discount type: fixed or percent,
+* additional fee,
 * minimum and/or maximum cart amount for adding the fee/discount,
 * rounding options,
-* taxation options.
+* taxation options,
+* shipping options,
+* product categories,
+* customer countries.
 
 = Feedback =
-* We are open to your suggestions and feedback - Thank you for using or trying out one of our plugins!
+* We are open to your suggestions and feedback. Thank you for using or trying out one of our plugins!
 * Drop us a line at http://www.algoritmika.com
 
 = More =
@@ -45,6 +49,9 @@ Plugin requires **minimum setup**: after enabling the fee/discount for selected 
 3. Go to WooCommerce > Settings > Checkout Fees.
 
 == Changelog ==
+
+= 2.0.1 - 10/03/2016 =
+* Fix - Additional checks in `add_gateway_fees_settings_hook()`.
 
 = 2.0.0 - 01/03/2016 =
 * Dev - `%product_title%`, `%product_variation_atts%` added.

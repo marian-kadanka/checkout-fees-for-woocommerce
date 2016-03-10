@@ -3,7 +3,7 @@
 Plugin Name: Checkout Fees and Discounts for WooCommerce
 Plugin URI: http://coder.fm/item/checkout-fees-for-woocommerce-plugin/
 Description: WooCommerce Payment Gateways Fees and Discounts.
-Version: 2.0.0
+Version: 2.0.1
 Author: Algoritmika Ltd
 Author URI: http://www.algoritmika.com
 Copyright: © 2016 Algoritmika Ltd.

@@ -2,7 +2,7 @@
 /**
  * Checkout Fees for WooCommerce - Gateways Section(s) Settings
  *
- * @version 2.0.0
+ * @version 2.0.1
  * @since   1.0.0
  * @author  Algoritmika Ltd.
  */
@@ -36,12 +36,16 @@ class Alg_WC_Checkout_Fees_Settings_Gateways {
 
 	/**
 	 * add_gateway_fees_settings_hook.
+	 *
+	 * @version 2.0.1
 	 */
 	function add_gateway_fees_settings_hook() {
 		global $woocommerce;
-		$available_gateways = $woocommerce->payment_gateways->payment_gateways();
-		foreach ( $available_gateways as $key => $gateway ) {
-			add_filter( 'woocommerce_get_settings_alg_checkout_fees_' . $key, array( $this, 'add_gateway_fees_settings' ), PHP_INT_MAX );
+		if ( isset( $woocommerce ) ) {
+			$available_gateways = $woocommerce->payment_gateways->payment_gateways();
+			foreach ( $available_gateways as $key => $gateway ) {
+				add_filter( 'woocommerce_get_settings_alg_checkout_fees_' . $key, array( $this, 'add_gateway_fees_settings' ), PHP_INT_MAX );
+			}
 		}
 	}
 
