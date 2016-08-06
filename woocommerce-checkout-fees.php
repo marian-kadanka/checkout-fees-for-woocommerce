@@ -3,7 +3,7 @@
 Plugin Name: Checkout Fees and Discounts for WooCommerce
 Plugin URI: http://coder.fm/item/checkout-fees-for-woocommerce-plugin/
 Description: WooCommerce Payment Gateways Fees and Discounts.
-Version: 2.0.1
+Version: 2.0.2
 Author: Algoritmika Ltd
 Author URI: http://www.algoritmika.com
 Copyright: © 2016 Algoritmika Ltd.
@@ -15,10 +15,18 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 // Check if WooCommerce is active
-if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) return;
+$plugin = 'woocommerce/woocommerce.php';
+if (
+	! in_array( $plugin, apply_filters( 'active_plugins', get_option( 'active_plugins', array() ) ) ) &&
+	! ( is_multisite() && array_key_exists( $plugin, get_site_option( 'active_sitewide_plugins', array() ) ) )
+) return;
 
 // Check if Pro is active, if so then return
-if ( in_array( 'checkout-fees-for-woocommerce-pro/woocommerce-checkout-fees-pro.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) return;
+$plugin = 'checkout-fees-for-woocommerce-pro/woocommerce-checkout-fees-pro.php';
+if (
+	in_array( $plugin, apply_filters( 'active_plugins', get_option( 'active_plugins', array() ) ) ) ||
+	( is_multisite() && array_key_exists( $plugin, get_site_option( 'active_sitewide_plugins', array() ) ) )
+) return;
 
 if ( ! class_exists( 'Alg_Woocommerce_Checkout_Fees' ) ) :
 

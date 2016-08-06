@@ -1,9 +1,9 @@
 === Checkout Fees and Discounts for WooCommerce ===
-Contributors: algoritmika
+Contributors: anbinder
 Tags: woocommerce,payment,gateway,fee,discount
 Requires at least: 3.8
 Tested up to: 4.4
-Stable tag: 2.0.1
+Stable tag: 2.0.2
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -49,6 +49,14 @@ Plugin requires **minimum setup**: after enabling the fee/discount for selected 
 3. Go to WooCommerce > Settings > Checkout Fees.
 
 == Changelog ==
+
+= 2.0.2 - 06/08/2016 =
+* Dev - Multisite support added.
+* Dev - "Variable Products Info" option added.
+* Dev - "Categories to include - Calculation type" option added to global fees.
+* Fix - `sanitize_title()` added to `add_gateway_fees_settings_hook()` and removed from `output_sections()`.
+* Dev - Language (POT) file added.
+* Tweak - Author changed.
 
 = 2.0.1 - 10/03/2016 =
 * Fix - Additional checks in `add_gateway_fees_settings_hook()`.

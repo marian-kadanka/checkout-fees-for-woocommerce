@@ -2,7 +2,7 @@
 /**
  * Checkout Fees for WooCommerce - Settings
  *
- * @version 2.0.0
+ * @version 2.0.2
  * @since   1.0.0
  * @author  Algoritmika Ltd.
  */
@@ -36,7 +36,7 @@ class Alg_WC_Settings_Checkout_Fees extends WC_Settings_Page {
 	/**
 	 * Output sections.
 	 *
-	 * @version 2.0.0
+	 * @version 2.0.2
 	 * @since   2.0.0
 	 */
 	public function output_sections() {
@@ -55,7 +55,7 @@ class Alg_WC_Settings_Checkout_Fees extends WC_Settings_Page {
 		$array_keys = array_keys( $sections );
 
 		foreach ( $sections as $id => $label ) {
-			echo '<li><a href="' . admin_url( 'admin.php?page=wc-settings&tab=' . $this->id . '&section=' . sanitize_title( $id ) ) . '" class="' . ( $the_current_section == $id ? 'current' : '' ) . '">' . $label . '</a> ' . ( end( $array_keys ) == $id ? '' : '|' ) . ' </li>';
+			echo '<li><a href="' . admin_url( 'admin.php?page=wc-settings&tab=' . $this->id . '&section=' . /* sanitize_title */( $id ) ) . '" class="' . ( $the_current_section == $id ? 'current' : '' ) . '">' . $label . '</a> ' . ( end( $array_keys ) == $id ? '' : '|' ) . ' </li>';
 		}
 
 		echo '</ul><br class="clear" />';

@@ -2,7 +2,7 @@
 /**
  * Checkout Fees for WooCommerce - General Section Settings
  *
- * @version 2.0.0
+ * @version 2.0.2
  * @since   1.0.0
  * @author  Algoritmika Ltd.
  */
@@ -36,7 +36,7 @@ class Alg_WC_Checkout_Fees_Settings_General {
 	/**
 	 * get_settings.
 	 *
-	 * @version 2.0.0
+	 * @version 2.0.2
 	 */
 	function get_settings() {
 
@@ -205,6 +205,17 @@ class Alg_WC_Checkout_Fees_Settings_General {
 				'id'        => 'alg_woocommerce_checkout_fees_lowest_price_info_hook_priority',
 				'default'   => 20,
 				'type'      => 'number',
+			),
+
+			array(
+				'title'     => __( 'Variable Products Info', 'alg-woocommerce-fees' ),
+				'id'        => 'alg_woocommerce_checkout_fees_variable_info',
+				'default'   => 'for_each_variation',
+				'type'      => 'select',
+				'options'   => array(
+					'for_each_variation' => __( 'For each variation', 'alg-woocommerce-fees' ),
+					'ranges'             => __( 'As price range', 'alg-woocommerce-fees' ),
+				),
 			),
 
 			array(

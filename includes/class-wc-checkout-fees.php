@@ -2,7 +2,7 @@
 /**
  * Checkout Fees for WooCommerce
  *
- * @version 2.0.0
+ * @version 2.0.2
  * @since   1.0.0
  * @author  Algoritmika Ltd.
  */
@@ -122,21 +122,15 @@ class Alg_WC_Checkout_Fees {
 	/**
 	 * get_checkout_fees_info.
 	 *
-	 * @version 2.0.0
+	 * @version 2.0.2
 	 * @since   1.2.0
 	 */
 	function get_checkout_fees_info( $lowest_price_only ) {
 
-		$lowest_price = PHP_INT_MAX;
-		$lowest_price_gateway = '';
-
-		$final_html = '';
-
-		$product_id = get_the_ID();
+		$product_id  = get_the_ID();
 		$the_product = wc_get_product( $product_id );
 
 		$products_array = array();
-
 		if ( $the_product->is_type( 'variable' ) ) {
 			foreach( $the_product->get_available_variations() as $product_variation ) {
 				$variation_product = wc_get_product( $product_variation['variation_id'] );
@@ -154,12 +148,18 @@ class Alg_WC_Checkout_Fees {
 			);
 		}
 
+		$gateways_data      = array();
+		$lowest_price_array = array();
+
 		foreach ( $products_array as $product_data ) {
 
 			$the_variation_atts = $product_data['variation_atts'];
 			$the_price_original = $product_data['price'];
 
-			$html = '';
+			$single_product_gateways_data = array();
+
+			$lowest_price = PHP_INT_MAX;
+			$lowest_price_gateway = '';
 
 			$available_gateways = WC()->payment_gateways->get_available_payment_gateways();
 			foreach ( $available_gateways as $available_gateway_key => $available_gateway ) {
@@ -238,17 +238,17 @@ class Alg_WC_Checkout_Fees {
 					$price_diff = ( $the_price - $the_price_original );
 
 					if ( false === $lowest_price_only ) {
-						// Creating output
-						$row_html = get_option( 'alg_woocommerce_checkout_fees_info_row_template' );
-						$row_html = str_replace( '%gateway_title%',          $available_gateway->title,             $row_html );
-						$row_html = str_replace( '%gateway_description%',    $available_gateway->get_description(), $row_html );
-						$row_html = str_replace( '%gateway_icon%',           $available_gateway->get_icon(),        $row_html );
-						$row_html = str_replace( '%product_gateway_price%',  wc_price( $the_price ),                $row_html );
-						$row_html = str_replace( '%product_original_price%', wc_price( $the_price_original ),       $row_html );
-						$row_html = str_replace( '%product_price_diff%',     wc_price( $price_diff ),               $row_html );
-						$row_html = str_replace( '%product_title%',          $the_product->get_title(),             $row_html );
-						$row_html = str_replace( '%product_variation_atts%', $the_variation_atts,                   $row_html );
-						$html .= $row_html;
+						// Saving for output
+						$single_product_gateways_data[ $available_gateway_key ] = array(
+							'gateway_title'          => $available_gateway->title,
+							'gateway_description'    => $available_gateway->get_description(),
+							'gateway_icon'           => $available_gateway->get_icon(),
+							'product_gateway_price'  => /* wc_price */( $the_price ),
+							'product_original_price' => /* wc_price */( $the_price_original ),
+							'product_price_diff'     => /* wc_price */( $price_diff ),
+							'product_title'          => $the_product->get_title(),
+							'product_variation_atts' => $the_variation_atts,
+						);
 					}
 
 					if ( true === $lowest_price_only ) {
@@ -264,25 +264,109 @@ class Alg_WC_Checkout_Fees {
 				}
 			}
 
-			// Outputing lowest price info
+			$gateways_data[] = $single_product_gateways_data;
+
+			// Saving lowest price info
 			if ( true === $lowest_price_only && '' != $lowest_price_gateway ) {
-				$html = get_option( 'alg_woocommerce_checkout_fees_lowest_price_info_template' );
-				$html = str_replace( '%gateway_title%',          $lowest_price_gateway,             $html );
-				$html = str_replace( '%gateway_description%',    $lowest_price_gateway_description, $html );
-				$html = str_replace( '%gateway_icon%',           $lowest_price_gateway_icon,        $html );
-				$html = str_replace( '%product_gateway_price%',  wc_price( $lowest_price ),         $html );
-				$html = str_replace( '%product_original_price%', wc_price( $the_price_original ),   $html );
-				$html = str_replace( '%product_price_diff%',     wc_price( $lowest_price_diff ),    $html );
-				$html = str_replace( '%product_title%',          $the_product->get_title(),         $html );
-				$html = str_replace( '%product_variation_atts%', $the_variation_atts,               $html );
-				$final_html .= $html;
+				$lowest_price_array[] = array(
+					'gateway_title'          => $lowest_price_gateway,
+					'gateway_description'    => $lowest_price_gateway_description,
+					'gateway_icon'           => $lowest_price_gateway_icon,
+					'product_gateway_price'  => $lowest_price,
+					'product_original_price' => $the_price_original,
+					'product_price_diff'     => $lowest_price_diff,
+					'product_title'          => $the_product->get_title(),
+					'product_variation_atts' => $the_variation_atts,
+				);
 			}
+		}
 
-			// Outputing full info
-			if ( false === $lowest_price_only && '' != $html ) {
-				$final_html .= get_option( 'alg_woocommerce_checkout_fees_info_start_template' ) . $html . get_option( 'alg_woocommerce_checkout_fees_info_end_template' );
+		// Outputing results
+		$price_keys = array( 'product_gateway_price', 'product_original_price', 'product_price_diff' );
+		$final_html = '';
+		if ( 'for_each_variation' === get_option( 'alg_woocommerce_checkout_fees_variable_info', 'for_each_variation' ) ) {
+			if ( false === $lowest_price_only && ! empty( $gateways_data ) ) {
+				// All gateways
+				foreach ( $gateways_data as $single_product_gateways_data ) {
+					$single_product_gateways_data_html = '';
+					foreach ( $single_product_gateways_data as $row ) {
+						$row_html = get_option( 'alg_woocommerce_checkout_fees_info_row_template' );
+						foreach ( $row as $key => $value ) {
+							if ( in_array( $key, $price_keys ) ) {
+								$value = wc_price( $value );
+							}
+							$row_html = str_replace( '%' . $key . '%', $value, $row_html );
+						}
+						$single_product_gateways_data_html .= $row_html;
+					}
+					$final_html .= get_option( 'alg_woocommerce_checkout_fees_info_start_template' ) . $single_product_gateways_data_html . get_option( 'alg_woocommerce_checkout_fees_info_end_template' );
+				}
+			} elseif ( true === $lowest_price_only && ! empty( $lowest_price_array ) ) {
+				// Lowest price only
+				foreach ( $lowest_price_array as $lowest_price ) {
+					$row_html = get_option( 'alg_woocommerce_checkout_fees_lowest_price_info_template' );
+					foreach ( $lowest_price as $key => $value ) {
+						if ( in_array( $key, $price_keys ) ) {
+							$value = wc_price( $value );
+						}
+						$row_html = str_replace( '%' . $key . '%', $value, $row_html );
+					}
+					$final_html .= $row_html;
+				}
 			}
-
+		} elseif ( 'ranges' === get_option( 'alg_woocommerce_checkout_fees_variable_info', 'for_each_variation' ) ) {
+			if ( false === $lowest_price_only && ! empty( $gateways_data ) ) {
+				// All gateways
+				$modified_array = array();
+				foreach ( $gateways_data as $i => $single_product_gateways_data ) {
+					foreach ( $single_product_gateways_data as $gateway_key => $row ) {
+						foreach ( $row as $key => $value ) {
+							$modified_array[ $gateway_key ][ $key ][ $i ] = $value;
+						}
+					}
+				}
+				foreach ( $modified_array as $gateway_key => $values ) {
+					$row_html = get_option( 'alg_woocommerce_checkout_fees_info_row_template' );
+					foreach ( $values as $key => $values_array ) {
+						$values_array = array_unique( $values_array );
+						if ( in_array( $key, $price_keys ) ) {
+							if ( count( $values_array ) > 1 ) {
+								$value = wc_price( min( $values_array ) ) . '&ndash;'. wc_price( max( $values_array ) );
+							} else {
+								$value = wc_price( min( $values_array ) );
+							}
+						} else {
+							$value = implode( '<br>', $values_array );
+						}
+						$row_html = str_replace( '%' . $key . '%', $value, $row_html );
+					}
+					$final_html .= $row_html;
+				}
+				$final_html = get_option( 'alg_woocommerce_checkout_fees_info_start_template' ) . $final_html . get_option( 'alg_woocommerce_checkout_fees_info_end_template' );
+			} elseif ( true === $lowest_price_only && ! empty( $lowest_price_array ) ) {
+				// Lowest price only
+				$modified_array = array();
+				foreach ( $lowest_price_array as $i => $row ) {
+					foreach ( $row as $key => $value ) {
+						$modified_array[ $key ][ $i ] = $value;
+					}
+				}
+				$row_html = get_option( 'alg_woocommerce_checkout_fees_lowest_price_info_template' );
+				foreach ( $modified_array as $key => $values_array ) {
+					$values_array = array_unique( $values_array );
+					if ( in_array( $key, $price_keys ) ) {
+						if ( count( $values_array ) > 1 ) {
+							$value = wc_price( min( $values_array ) ) . '&ndash;'. wc_price( max( $values_array ) );
+						} else {
+							$value = wc_price( min( $values_array ) );
+						}
+					} else {
+						$value = implode( '<br>', $values_array );
+					}
+					$row_html = str_replace( '%' . $key . '%', $value, $row_html );
+				}
+				$final_html = $row_html;
+			}
 		}
 
 		return $final_html;
@@ -454,7 +538,7 @@ class Alg_WC_Checkout_Fees {
 	/**
 	 * calculate_the_fee.
 	 *
-	 * @version 2.0.0
+	 * @version 2.0.2
 	 * @since   2.0.0
 	 */
 	function calculate_the_fee( $args, $final_fee_to_add, $total_in_cart, $fee_num ) {
@@ -473,7 +557,24 @@ class Alg_WC_Checkout_Fees {
 				if ( 0 != $product_id ) {
 					$_product = wc_get_product( $product_id );
 				}
-				$sum_for_fee = ( 0 != $product_id ) ? $_product->get_price() * $product_qty : $total_in_cart;
+				if ( 0 != $product_id ) {
+					$sum_for_fee = $_product->get_price() * $product_qty;
+				} else {
+					$include_cats = get_option( 'alg_gateways_fees_cats_include_' . $current_gateway, '' );
+					if ( ! empty( $include_cats ) && 'only_for_selected_products' === get_option( 'alg_gateways_fees_cats_include_calc_type_' . $current_gateway, 'for_all_cart' ) ) {
+						$sum_for_fee = 0;
+						foreach ( WC()->cart->get_cart() as $cart_item_key => $values ) {
+							$product_cats = $this->get_product_cats( $values['product_id'] );
+							$the_intersect = array_intersect( $product_cats, $include_cats );
+							if ( ! empty( $the_intersect ) ) {
+								$_product = wc_get_product( $values['product_id'] );
+								$sum_for_fee += $_product->get_price() * $values['quantity'];
+							}
+						}
+					} else {
+						$sum_for_fee = $total_in_cart;
+					}
+				}
 				$final_fee_to_add += ( $fee_value / 100 ) * $sum_for_fee;
 				if ( 'yes' === $do_round ) {
 					$final_fee_to_add = round( $final_fee_to_add, $precision );
