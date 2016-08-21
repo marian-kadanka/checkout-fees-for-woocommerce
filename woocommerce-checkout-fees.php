@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: Checkout Fees and Discounts for WooCommerce
+Plugin Name: Payment Gateway Based Fees and Discounts for WooCommerce
 Plugin URI: http://coder.fm/item/checkout-fees-for-woocommerce-plugin/
 Description: WooCommerce Payment Gateways Fees and Discounts.
-Version: 2.0.2
+Version: 2.1.0
 Author: Algoritmika Ltd
 Author URI: http://www.algoritmika.com
 Copyright: © 2016 Algoritmika Ltd.
@@ -33,11 +33,19 @@ if ( ! class_exists( 'Alg_Woocommerce_Checkout_Fees' ) ) :
 /**
  * Main Alg_Woocommerce_Checkout_Fees Class
  *
- * @version 2.0.0
+ * @version 2.1.0
  * @class   Alg_Woocommerce_Checkout_Fees
  */
 
 final class Alg_Woocommerce_Checkout_Fees {
+
+	/**
+	 * Plugin version.
+	 *
+	 * @var   string
+	 * @since 2.1.0
+	 */
+	public $version = '2.1.0';
 
 	/**
 	 * @var Alg_Woocommerce_Checkout_Fees The single instance of the class
@@ -94,28 +102,29 @@ final class Alg_Woocommerce_Checkout_Fees {
 	/**
 	 * Include required core files used in admin and on the frontend.
 	 *
-	 * @version 1.1.0
+	 * @version 2.1.0
 	 */
 	private function includes() {
 
 		$settings = array();
 		$settings[] = require_once( 'includes/admin/class-wc-checkout-fees-settings-general.php' );
 		$settings[] = require_once( 'includes/admin/class-wc-checkout-fees-settings-gateways.php' );
-		if ( is_admin() ) {
+		if ( is_admin() && get_option( 'alg_woocommerce_checkout_fees_version', '' ) !== $this->version ) {
 			foreach ( $settings as $section ) {
 				foreach ( $section->get_settings() as $value ) {
 					if ( isset( $value['default'] ) && isset( $value['id'] ) ) {
-						if ( isset ( $_GET['alg_woocommerce_checkout_fees_admin_options_reset'] ) ) {
+						/* if ( isset ( $_GET['alg_woocommerce_checkout_fees_admin_options_reset'] ) ) {
 							require_once( ABSPATH . 'wp-includes/pluggable.php' );
 							if ( is_super_admin() ) {
 								delete_option( $value['id'] );
 							}
-						}
+						} */
 						$autoload = isset( $value['autoload'] ) ? ( bool ) $value['autoload'] : true;
 						add_option( $value['id'], $value['default'], '', ( $autoload ? 'yes' : 'no' ) );
 					}
 				}
 			}
+			update_option( 'alg_woocommerce_checkout_fees_version', $this->version );
 		}
 
 		require_once( 'includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php' );

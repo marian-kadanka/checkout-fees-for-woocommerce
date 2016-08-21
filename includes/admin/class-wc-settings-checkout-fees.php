@@ -2,7 +2,7 @@
 /**
  * Checkout Fees for WooCommerce - Settings
  *
- * @version 2.0.2
+ * @version 2.1.0
  * @since   1.0.0
  * @author  Algoritmika Ltd.
  */
@@ -15,11 +15,13 @@ class Alg_WC_Settings_Checkout_Fees extends WC_Settings_Page {
 
 	/**
 	 * Constructor.
+	 *
+	 * @version 2.1.0
 	 */
 	function __construct() {
 
 		$this->id    = 'alg_checkout_fees';
-		$this->label = __( 'Checkout Fees', 'alg-woocommerce-fees' );
+		$this->label = __( 'Payment Gateway Based Fees and Discounts', 'alg-woocommerce-fees' );
 
 		parent::__construct();
 	}

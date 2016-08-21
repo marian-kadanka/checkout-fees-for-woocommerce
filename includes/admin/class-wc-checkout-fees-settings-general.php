@@ -2,7 +2,7 @@
 /**
  * Checkout Fees for WooCommerce - General Section Settings
  *
- * @version 2.0.2
+ * @version 2.1.0
  * @since   1.0.0
  * @author  Algoritmika Ltd.
  */
@@ -36,20 +36,20 @@ class Alg_WC_Checkout_Fees_Settings_General {
 	/**
 	 * get_settings.
 	 *
-	 * @version 2.0.2
+	 * @version 2.1.0
 	 */
 	function get_settings() {
 
 		$settings = array(
 
 			array(
-				'title'     => __( 'Checkout Fees and Discounts', 'alg-woocommerce-fees' ),
+				'title'     => __( 'Payment Gateway Based Fees and Discounts', 'alg-woocommerce-fees' ),
 				'type'      => 'title',
 				'id'        => 'alg_woocommerce_checkout_fees_options',
 			),
 
 			array(
-				'title'     => __( 'Payment Gateways Fees and Discounts', 'alg-woocommerce-fees' ),
+				'title'     => __( 'Payment Gateway Based Fees and Discounts', 'alg-woocommerce-fees' ),
 				'desc'      => '<strong>' . __( 'Enable', 'alg-woocommerce-fees' ) . '</strong>',
 				'desc_tip'  => __( 'Enable extra fees or discounts for WooCommerce payment gateways.', 'alg-woocommerce-fees' ),
 				'id'        => 'alg_woocommerce_checkout_fees_enabled',

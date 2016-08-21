@@ -1,9 +1,9 @@
-=== Checkout Fees and Discounts for WooCommerce ===
-Contributors: anbinder
+=== Payment Gateway Based Fees and Discounts for WooCommerce ===
+Contributors: algoritmika,anbinder
 Tags: woocommerce,payment,gateway,fee,discount
-Requires at least: 3.8
-Tested up to: 4.4
-Stable tag: 2.0.2
+Requires at least: 4.4
+Tested up to: 4.6
+Stable tag: 2.1.0
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -11,9 +11,9 @@ Set fees or discounts for WooCommerce payment gateways.
 
 == Description ==
 
-**Checkout Fees for WooCommerce** plugin extend WooCommerce by adding options to set **payment gateways fees or discounts**.
+**Payment Gateway Based Fees and Discounts for WooCommerce** plugin extends WooCommerce by adding options to set **fees or discounts based on customer selected payment gateway**.
 
-Checkout fees and discounts can be added to **all payment gateways**, both:
+Payment gateway based fees and discounts can be added to **all payment gateways** including:
 
 * standard WooCommerce payment gateways (Direct Bank Transfer (BACS), Cheque Payment, Cash on Delivery and PayPal),
 * custom payment gateways added with any other plugin.
@@ -23,7 +23,7 @@ Fees and discounts can be set:
 * globally for all products, or
 * on per product basis.
 
-Plugin requires **minimum setup**: after enabling the fee/discount for selected gateway (in WooCommerce > Settings > Checkout Fees), you can set:
+Plugin requires **minimum setup**: after enabling the fee/discount for selected gateway (in WooCommerce > Settings > Payment Gateway Based Fees and Discounts), you can set:
 
 * fee/discount value,
 * fee/discount type: fixed or percent,
@@ -40,15 +40,25 @@ Plugin requires **minimum setup**: after enabling the fee/discount for selected 
 * Drop us a line at http://www.algoritmika.com
 
 = More =
-* Visit the *Checkout Fees for WooCommerce* plugin page at http://coder.fm/item/checkout-fees-for-woocommerce-plugin/
+* Visit the *Payment Gateway Based Fees and Discounts for WooCommerce* plugin page at http://coder.fm/item/payment-gateway-based-fees-and-discounts-for-woocommerce-plugin/
 
 == Installation ==
 
 1. Upload the entire 'checkout-fees-for-woocommerce' folder to the '/wp-content/plugins/' directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Go to WooCommerce > Settings > Checkout Fees.
+3. Go to WooCommerce > Settings > Payment Gateway Based Fees and Discounts.
 
 == Changelog ==
+
+= 2.1.0 - 20/08/2016 =
+* Fix - Tax bug fixed when "Categories to include - Calculation type" is equal to "Only for selected products".
+* Fix - Tax bug fixed in info.
+* Fix - "Categories to include - Calculation type" with value "Only for selected products" fixed when displaying info.
+* Dev - "Categories to exclude - Calculation type." option added.
+* Dev - "Categories to include (additional fee)." and "Categories to exclude (additional fee)." options added.
+* Dev - Version system added.
+* Tweak - Author changed.
+* Tweak - Plugin renamed.
 
 = 2.0.2 - 06/08/2016 =
 * Dev - Multisite support added.

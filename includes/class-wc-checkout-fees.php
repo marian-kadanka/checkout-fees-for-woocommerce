@@ -2,7 +2,7 @@
 /**
  * Checkout Fees for WooCommerce
  *
- * @version 2.0.2
+ * @version 2.1.0
  * @since   1.0.0
  * @author  Algoritmika Ltd.
  */
@@ -122,7 +122,7 @@ class Alg_WC_Checkout_Fees {
 	/**
 	 * get_checkout_fees_info.
 	 *
-	 * @version 2.0.2
+	 * @version 2.1.0
 	 * @since   1.2.0
 	 */
 	function get_checkout_fees_info( $lowest_price_only ) {
@@ -130,20 +130,26 @@ class Alg_WC_Checkout_Fees {
 		$product_id  = get_the_ID();
 		$the_product = wc_get_product( $product_id );
 
+		$tax_display_mode = get_option( 'woocommerce_tax_display_shop' );
+
 		$products_array = array();
 		if ( $the_product->is_type( 'variable' ) ) {
 			foreach( $the_product->get_available_variations() as $product_variation ) {
 				$variation_product = wc_get_product( $product_variation['variation_id'] );
 				$products_array[] = array(
 					'variation_atts' => $variation_product->get_formatted_variation_attributes( true ),
-					'price'          => $product_variation['display_price'],
+					'price_excl_tax' => $variation_product->get_price_excluding_tax(),
+					'price_incl_tax' => $variation_product->get_price_including_tax(),
+					'display_price'  => $variation_product->get_display_price(),
 				);
 			}
 		} else {
 			$products_array = array(
 				array(
 					'variation_atts' => '',
-					'price'          => $the_product->get_price(),
+					'price_excl_tax' => $the_product->get_price_excluding_tax(),
+					'price_incl_tax' => $the_product->get_price_including_tax(),
+					'display_price'  => $the_product->get_display_price(),
 				),
 			);
 		}
@@ -154,7 +160,9 @@ class Alg_WC_Checkout_Fees {
 		foreach ( $products_array as $product_data ) {
 
 			$the_variation_atts = $product_data['variation_atts'];
-			$the_price_original = $product_data['price'];
+			$the_price_excl_tax = $product_data['price_excl_tax'];
+			$the_price_incl_tax = $product_data['price_incl_tax'];
+			$the_display_price  = $product_data['display_price'];
 
 			$single_product_gateways_data = array();
 
@@ -171,40 +179,19 @@ class Alg_WC_Checkout_Fees {
 					continue;
 				}
 
-				// Checking cats
-				$include_cats = get_option( 'alg_gateways_fees_cats_include_' . $current_gateway, '' );
-				$exclude_cats = get_option( 'alg_gateways_fees_cats_exclude_' . $current_gateway, '' );
-				if ( '' != $include_cats || '' != $exclude_cats ) {
-					$product_cats = $this->get_product_cats( $product_id );
-					if ( ! empty( $include_cats ) ) {
-						$the_intersect = array_intersect( $product_cats, $include_cats );
-						if ( empty( $the_intersect ) ) {
-							continue;
-						}
-					}
-					if ( ! empty( $exclude_cats ) ) {
-						$the_intersect = array_intersect( $product_cats, $exclude_cats );
-						if ( ! empty( $the_intersect ) ) {
-							continue;
-						}
-					}
-				}
-
 				// Fee - globally
 				$args = $this->get_the_args_global( $current_gateway );
-				$global_fee = $this->get_the_fee( $args, 'fee_both', $the_price_original );
+				$global_fee = $this->get_the_fee( $args, 'fee_both', $the_price_excl_tax, true, $product_id );
 
 				// Fee - per product
 				$local_fee = 0;
 				if ( 'yes' === get_option( 'alg_woocommerce_checkout_fees_per_product_enabled' ) && ( 'bacs' === $current_gateway || '' === apply_filters( 'alg_wc_checkout_fees_option', 'bacs' ) ) ) {
 					$args = $this->get_the_args_local( $current_gateway, $product_id, 0, 1 );
-					$local_fee = $this->get_the_fee( $args, 'fee_both', $the_price_original );
+					$local_fee = $this->get_the_fee( $args, 'fee_both', $the_price_excl_tax, true, $product_id );
 				}
 
-				if ( 0 != $global_fee || 0 != $local_fee ) {
-					// Calculating new price
-
-					$the_price = $the_price_original;
+				if ( $tax_display_mode == 'incl' ) {
+					$the_price = $the_price_incl_tax;
 					if ( 0 != $global_fee ) {
 						if ( 'yes' === get_option( 'alg_gateways_fees_is_taxable_' . $current_gateway ) ) {
 							$tax_class_name = '';
@@ -219,7 +206,6 @@ class Alg_WC_Checkout_Fees {
 						}
 						$the_price += $global_fee;
 					}
-					$fee_title_per_product = $fee_value_per_product = $fee_value_2_per_product = '';
 					if ( 0 != $local_fee ) {
 						if ( 'yes' === get_post_meta( $product_id, '_' . 'alg_checkout_fees_tax_enabled_' . $current_gateway, true ) ) {
 							$tax_class_name = '';
@@ -234,32 +220,35 @@ class Alg_WC_Checkout_Fees {
 						}
 						$the_price += $local_fee;
 					}
+					$price_diff = ( $the_price - $the_price_incl_tax );
+				} else {
+					$the_price = $the_price_excl_tax;
+					$the_price += $global_fee;
+					$the_price += $local_fee;
+					$price_diff = ( $the_price - $the_price_excl_tax );
+				}
 
-					$price_diff = ( $the_price - $the_price_original );
 
-					if ( false === $lowest_price_only ) {
-						// Saving for output
-						$single_product_gateways_data[ $available_gateway_key ] = array(
-							'gateway_title'          => $available_gateway->title,
-							'gateway_description'    => $available_gateway->get_description(),
-							'gateway_icon'           => $available_gateway->get_icon(),
-							'product_gateway_price'  => /* wc_price */( $the_price ),
-							'product_original_price' => /* wc_price */( $the_price_original ),
-							'product_price_diff'     => /* wc_price */( $price_diff ),
-							'product_title'          => $the_product->get_title(),
-							'product_variation_atts' => $the_variation_atts,
-						);
-					}
-
-					if ( true === $lowest_price_only ) {
-						// Saving lowest price data
-						if ( $the_price < $lowest_price ) {
-							$lowest_price                      = $the_price;
-							$lowest_price_gateway              = $available_gateway->title;
-							$lowest_price_gateway_description  = $available_gateway->get_description();
-							$lowest_price_gateway_icon         = $available_gateway->get_icon();
-							$lowest_price_diff                 = $price_diff;
-						}
+				if ( false === $lowest_price_only ) {
+					// Saving for output
+					$single_product_gateways_data[ $available_gateway_key ] = array(
+						'gateway_title'          => $available_gateway->title,
+						'gateway_description'    => $available_gateway->get_description(),
+						'gateway_icon'           => $available_gateway->get_icon(),
+						'product_gateway_price'  => /* wc_price */( $the_price ),
+						'product_original_price' => /* wc_price */( $the_display_price ),
+						'product_price_diff'     => /* wc_price */( $price_diff ),
+						'product_title'          => $the_product->get_title(),
+						'product_variation_atts' => $the_variation_atts,
+					);
+				} else { // if ( true === $lowest_price_only ) {
+					// Saving lowest price data
+					if ( $the_price < $lowest_price ) {
+						$lowest_price                      = $the_price;
+						$lowest_price_gateway              = $available_gateway->title;
+						$lowest_price_gateway_description  = $available_gateway->get_description();
+						$lowest_price_gateway_icon         = $available_gateway->get_icon();
+						$lowest_price_diff                 = $price_diff;
 					}
 				}
 			}
@@ -273,7 +262,7 @@ class Alg_WC_Checkout_Fees {
 					'gateway_description'    => $lowest_price_gateway_description,
 					'gateway_icon'           => $lowest_price_gateway_icon,
 					'product_gateway_price'  => $lowest_price,
-					'product_original_price' => $the_price_original,
+					'product_original_price' => $the_display_price,
 					'product_price_diff'     => $lowest_price_diff,
 					'product_title'          => $the_product->get_title(),
 					'product_variation_atts' => $the_variation_atts,
@@ -396,7 +385,7 @@ class Alg_WC_Checkout_Fees {
 	/**
 	 * add_gateways_fees.
 	 *
-	 * @version 2.0.0
+	 * @version 2.1.0
 	 */
 	function add_gateways_fees( $the_cart ) {
 
@@ -418,35 +407,6 @@ class Alg_WC_Checkout_Fees {
 		// Add fee - globally
 		// Checking country
 		$do_add_fees_global = $this->check_countries( $current_gateway );
-		// Checking cats
-		if ( $do_add_fees_global ) {
-			$include_cats = get_option( 'alg_gateways_fees_cats_include_' . $current_gateway, '' );
-			$exclude_cats = get_option( 'alg_gateways_fees_cats_exclude_' . $current_gateway, '' );
-			if ( '' != $include_cats || '' != $exclude_cats ) {
-				foreach ( WC()->cart->get_cart() as $cart_item_key => $values ) {
-					$product_cats = $this->get_product_cats( $values['product_id'] );
-					if ( ! empty( $include_cats ) ) {
-						$the_intersect = array_intersect( $product_cats, $include_cats );
-						if ( empty( $the_intersect ) ) {
-							$do_add_fees_global = false;
-						} else {
-							// At least one product in the cart is ok, no need to check further
-							$do_add_fees_global = true;
-							break;
-						}
-					}
-					if ( ! empty( $exclude_cats ) ) {
-						$the_intersect = array_intersect( $product_cats, $exclude_cats );
-						if ( ! empty( $the_intersect ) ) {
-							// At least one product in the cart is NOT ok, no need to check further
-							$do_add_fees_global = false;
-							break;
-						}
-					}
-				}
-			}
-		}
-		// Adding (maybe)
 		if ( $do_add_fees_global ) {
 			$args = $this->get_the_args_global( $current_gateway );
 			$this->maybe_add_cart_fee( $args );
@@ -538,7 +498,7 @@ class Alg_WC_Checkout_Fees {
 	/**
 	 * calculate_the_fee.
 	 *
-	 * @version 2.0.2
+	 * @version 2.1.0
 	 * @since   2.0.0
 	 */
 	function calculate_the_fee( $args, $final_fee_to_add, $total_in_cart, $fee_num ) {
@@ -555,25 +515,10 @@ class Alg_WC_Checkout_Fees {
 				break;
 			case 'percent':
 				if ( 0 != $product_id ) {
-					$_product = wc_get_product( $product_id );
-				}
-				if ( 0 != $product_id ) {
+					$_product    = wc_get_product( $product_id );
 					$sum_for_fee = $_product->get_price() * $product_qty;
 				} else {
-					$include_cats = get_option( 'alg_gateways_fees_cats_include_' . $current_gateway, '' );
-					if ( ! empty( $include_cats ) && 'only_for_selected_products' === get_option( 'alg_gateways_fees_cats_include_calc_type_' . $current_gateway, 'for_all_cart' ) ) {
-						$sum_for_fee = 0;
-						foreach ( WC()->cart->get_cart() as $cart_item_key => $values ) {
-							$product_cats = $this->get_product_cats( $values['product_id'] );
-							$the_intersect = array_intersect( $product_cats, $include_cats );
-							if ( ! empty( $the_intersect ) ) {
-								$_product = wc_get_product( $values['product_id'] );
-								$sum_for_fee += $_product->get_price() * $values['quantity'];
-							}
-						}
-					} else {
-						$sum_for_fee = $total_in_cart;
-					}
+					$sum_for_fee = $total_in_cart;
 				}
 				$final_fee_to_add += ( $fee_value / 100 ) * $sum_for_fee;
 				if ( 'yes' === $do_round ) {
@@ -585,12 +530,125 @@ class Alg_WC_Checkout_Fees {
 	}
 
 	 /**
+	 * get_sum_for_fee_by_included_and_excluded_cats.
+	 *
+	 * @version 2.1.0
+	 * @since   2.1.0
+	 */
+	function get_sum_for_fee_by_included_and_excluded_cats( $total_in_cart, $fee_num, $current_gateway ) {
+		if ( 'fee_2' == $fee_num ) {
+			$include_cats = ( false === get_option( 'alg_gateways_fees_cats_include_fee_2_' . $current_gateway, false ) ) ?
+				get_option( 'alg_gateways_fees_cats_include_' . $current_gateway, '' ) :
+				get_option( 'alg_gateways_fees_cats_include_fee_2_' . $current_gateway, '' );
+			$exclude_cats = ( false === get_option( 'alg_gateways_fees_cats_exclude_fee_2_' . $current_gateway, false ) ) ?
+				get_option( 'alg_gateways_fees_cats_exclude_' . $current_gateway, '' ) :
+				get_option( 'alg_gateways_fees_cats_exclude_fee_2_' . $current_gateway, '' );
+		} else {
+			$include_cats = get_option( 'alg_gateways_fees_cats_include_' . $current_gateway, '' );
+			$exclude_cats = get_option( 'alg_gateways_fees_cats_exclude_' . $current_gateway, '' );
+		}
+		if ( ! empty( $include_cats ) && 'only_for_selected_products' === get_option( 'alg_gateways_fees_cats_include_calc_type_' . $current_gateway, 'for_all_cart' ) ) {
+			$sum_for_fee = 0;
+			foreach ( WC()->cart->get_cart() as $cart_item_key => $values ) {
+				$product_cats = $this->get_product_cats( $values['product_id'] );
+				$the_intersect = array_intersect( $product_cats, $include_cats );
+				if ( ! empty( $the_intersect ) ) {
+					/* $_product = wc_get_product( $values['product_id'] );
+					$sum_for_fee += $_product->get_price_excluding_tax() * $values['quantity']; */
+					$sum_for_fee += $values['line_total'];
+				}
+			}
+		} elseif ( ! empty( $exclude_cats ) && 'only_for_selected_products' === get_option( 'alg_gateways_fees_cats_exclude_calc_type_' . $current_gateway, 'for_all_cart' ) ) {
+			$sum_for_fee = 0;
+			foreach ( WC()->cart->get_cart() as $cart_item_key => $values ) {
+				$product_cats = $this->get_product_cats( $values['product_id'] );
+				$the_intersect = array_intersect( $product_cats, $exclude_cats );
+				if ( empty( $the_intersect ) ) {
+					/* $_product = wc_get_product( $values['product_id'] );
+					$sum_for_fee += $_product->get_price_excluding_tax() * $values['quantity']; */
+					$sum_for_fee += $values['line_total'];
+				}
+			}
+		} else {
+			$sum_for_fee = $total_in_cart;
+		}
+		return $sum_for_fee;
+	}
+
+	 /**
+	 * do_apply_fees_by_categories.
+	 *
+	 * @version 2.1.0
+	 * @since   2.1.0
+	 */
+	function do_apply_fees_by_categories( $fee_num, $current_gateway, $info_product_id ) {
+		if ( 'fee_2' == $fee_num ) {
+			$include_cats = ( false === get_option( 'alg_gateways_fees_cats_include_fee_2_' . $current_gateway, false ) ) ?
+				get_option( 'alg_gateways_fees_cats_include_' . $current_gateway, '' ) :
+				get_option( 'alg_gateways_fees_cats_include_fee_2_' . $current_gateway, '' );
+			$exclude_cats = ( false === get_option( 'alg_gateways_fees_cats_exclude_fee_2_' . $current_gateway, false ) ) ?
+				get_option( 'alg_gateways_fees_cats_exclude_' . $current_gateway, '' ) :
+				get_option( 'alg_gateways_fees_cats_exclude_fee_2_' . $current_gateway, '' );
+		} else {
+			$include_cats = get_option( 'alg_gateways_fees_cats_include_' . $current_gateway, '' );
+			$exclude_cats = get_option( 'alg_gateways_fees_cats_exclude_' . $current_gateway, '' );
+		}
+		if ( '' != $include_cats || '' != $exclude_cats ) {
+			if ( 0 != $info_product_id ) {
+				$product_cats = $this->get_product_cats( $info_product_id );
+				if ( ! empty( $include_cats ) ) {
+					$the_intersect = array_intersect( $product_cats, $include_cats );
+					if ( empty( $the_intersect ) ) {
+						return false;
+					}
+				}
+				if ( ! empty( $exclude_cats ) ) {
+					$the_intersect = array_intersect( $product_cats, $exclude_cats );
+					if ( ! empty( $the_intersect ) ) {
+						return false;
+					}
+				}
+			} else {
+				$do_add_fees_global_by_include = true;
+				$do_add_fees_global_by_exclude = false;
+				foreach ( WC()->cart->get_cart() as $cart_item_key => $values ) {
+					$product_cats = $this->get_product_cats( $values['product_id'] );
+					if ( ! empty( $include_cats ) ) {
+						$the_intersect = array_intersect( $product_cats, $include_cats );
+						if ( empty( $the_intersect ) ) {
+							$do_add_fees_global_by_include = false;
+						} else {
+							// At least one product in the cart is ok, no need to check further
+							return true;
+						}
+					}
+					if ( ! empty( $exclude_cats ) ) {
+						$the_intersect = array_intersect( $product_cats, $exclude_cats );
+						if ( ! empty( $the_intersect ) ) {
+							if ( 'for_all_cart' === get_option( 'alg_gateways_fees_cats_exclude_calc_type_' . $current_gateway, 'for_all_cart' ) ) {
+								// At least one product in the cart is NOT ok, no need to check further
+								return false;
+							}
+						} else {
+							$do_add_fees_global_by_exclude = true;
+						}
+					}
+				}
+				if ( ! $do_add_fees_global_by_include && ! $do_add_fees_global_by_exclude ) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	 /**
 	 * get_the_fee.
 	 *
-	 * @version 2.0.0
+	 * @version 2.1.0
 	 * @since   1.2.0
 	 */
-	function get_the_fee( $args, $fee_num, $total_in_cart = 0 ) {
+	function get_the_fee( $args, $fee_num, $total_in_cart = 0, $is_info_only = false, $info_product_id = 0 ) {
 		extract( $args );
 		$final_fee_to_add = 0;
 		if ( '' != $current_gateway && 'yes' === $is_enabled ) {
@@ -602,10 +660,20 @@ class Alg_WC_Checkout_Fees {
 			}
 			if ( $total_in_cart >= $min_cart_amount && ( 0 == $max_cart_amount || $total_in_cart <= $max_cart_amount ) ) {
 				if ( 0 != $fee_value && 'fee_2' != $fee_num ) {
-					$final_fee_to_add = $this->calculate_the_fee( $args, $final_fee_to_add, $total_in_cart, 'fee_1' );
+					if ( 0 != $product_id || $this->do_apply_fees_by_categories( 'fee_1', $current_gateway, $info_product_id ) ) {
+						if ( ! $is_info_only && 0 == $product_id ) {
+							$total_in_cart = $this->get_sum_for_fee_by_included_and_excluded_cats( $total_in_cart, 'fee_1', $current_gateway );
+						}
+						$final_fee_to_add = $this->calculate_the_fee( $args, $final_fee_to_add, $total_in_cart, 'fee_1' );
+					}
 				}
 				if ( 0 != $fee_value_2 && 'fee_1' != $fee_num ) {
-					$final_fee_to_add = $this->calculate_the_fee( $args, $final_fee_to_add, $total_in_cart, 'fee_2' );
+					if ( 0 != $product_id || $this->do_apply_fees_by_categories( 'fee_2', $current_gateway, $info_product_id ) ) {
+						if ( ! $is_info_only && 0 == $product_id ) {
+							$total_in_cart = $this->get_sum_for_fee_by_included_and_excluded_cats( $total_in_cart, 'fee_2', $current_gateway );
+						}
+						$final_fee_to_add = $this->calculate_the_fee( $args, $final_fee_to_add, $total_in_cart, 'fee_2' );
+					}
 				}
 			}
 		}
