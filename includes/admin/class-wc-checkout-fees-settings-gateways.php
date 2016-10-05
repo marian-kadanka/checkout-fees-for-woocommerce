@@ -2,7 +2,7 @@
 /**
  * Checkout Fees for WooCommerce - Gateways Section(s) Settings
  *
- * @version 2.1.0
+ * @version 2.1.1
  * @since   1.0.0
  * @author  Algoritmika Ltd.
  */
@@ -64,7 +64,7 @@ class Alg_WC_Checkout_Fees_Settings_Gateways {
 	/**
 	 * add_gateway_fees_settings.
 	 *
-	 * @version 2.1.0
+	 * @version 2.1.1
 	 */
 	function add_gateway_fees_settings() {
 
@@ -138,6 +138,26 @@ class Alg_WC_Checkout_Fees_Settings_Gateways {
 			),
 
 			array(
+				'title'     => __( 'Minimum Fee Value', 'alg-woocommerce-fees' ),
+				'desc'      => __( 'Minimum fee (or discount).', 'alg-woocommerce-fees' ),
+				'desc_tip'  => __( 'Set 0 to disable.', 'alg-woocommerce-fees' ),
+				'id'        => 'alg_gateways_fees_min_fee_' . $key,
+				'default'   => 0,
+				'type'      => 'number',
+				'custom_attributes' => array( 'step' => '0.0001', ),
+			),
+
+			array(
+				'title'     => __( 'Maximum Fee Value', 'alg-woocommerce-fees' ),
+				'desc'      => __( 'Maximum fee (or discount).', 'alg-woocommerce-fees' ),
+				'desc_tip'  => __( 'Set 0 to disable.', 'alg-woocommerce-fees' ),
+				'id'        => 'alg_gateways_fees_max_fee_' . $key,
+				'default'   => 0,
+				'type'      => 'number',
+				'custom_attributes' => array( 'step' => '0.0001', ),
+			),
+
+			array(
 				'title'     => __( 'Additional Fee Title (Optional)', 'alg-woocommerce-fees' ),
 				'desc'      => __( 'Fee (or discount) title to show to customer.', 'alg-woocommerce-fees' ),
 				'desc_tip'  => __( 'To display each (i.e. main and additional) fees on different lines in cart (and checkout), you must set different titles. If titles are equal they will be merged into single line.', 'alg-woocommerce-fees' ),
@@ -170,7 +190,27 @@ class Alg_WC_Checkout_Fees_Settings_Gateways {
 			),
 
 			array(
-				'title'     => __( 'Minimum Amount', 'alg-woocommerce-fees' ),
+				'title'     => __( 'Minimum Additional Fee Value', 'alg-woocommerce-fees' ),
+				'desc'      => __( 'Minimum fee (or discount).', 'alg-woocommerce-fees' ),
+				'desc_tip'  => __( 'Set 0 to disable.', 'alg-woocommerce-fees' ),
+				'id'        => 'alg_gateways_fees_min_fee_2_' . $key,
+				'default'   => 0,
+				'type'      => 'number',
+				'custom_attributes' => array( 'step' => '0.0001', ),
+			),
+
+			array(
+				'title'     => __( 'Maximum Additional Fee Value', 'alg-woocommerce-fees' ),
+				'desc'      => __( 'Maximum fee (or discount).', 'alg-woocommerce-fees' ),
+				'desc_tip'  => __( 'Set 0 to disable.', 'alg-woocommerce-fees' ),
+				'id'        => 'alg_gateways_fees_max_fee_2_' . $key,
+				'default'   => 0,
+				'type'      => 'number',
+				'custom_attributes' => array( 'step' => '0.0001', ),
+			),
+
+			array(
+				'title'     => __( 'Minimum Cart Amount', 'alg-woocommerce-fees' ),
 				'desc'      => __( 'Minimum cart amount for adding the fee (or discount).', 'alg-woocommerce-fees' ),
 				'desc_tip'  => __( 'Set 0 to disable.', 'alg-woocommerce-fees' ),
 				'id'        => 'alg_gateways_fees_min_cart_amount_' . $key,
@@ -180,7 +220,7 @@ class Alg_WC_Checkout_Fees_Settings_Gateways {
 			),
 
 			array(
-				'title'     => __( 'Maximum Amount', 'alg-woocommerce-fees' ),
+				'title'     => __( 'Maximum Cart Amount', 'alg-woocommerce-fees' ),
 				'desc'      => __( 'Maximum cart amount for adding the fee (or discount).', 'alg-woocommerce-fees' ),
 				'desc_tip'  => __( 'Set 0 to disable.', 'alg-woocommerce-fees' ),
 				'id'        => 'alg_gateways_fees_max_cart_amount_' . $key,

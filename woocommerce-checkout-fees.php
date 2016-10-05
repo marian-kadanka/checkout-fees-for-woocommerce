@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: Payment Gateway Based Fees and Discounts for WooCommerce
+Plugin Name: Payment Gateway Based Fees and Discounts for WooCommerce Pro
 Plugin URI: http://coder.fm/item/checkout-fees-for-woocommerce-plugin/
 Description: WooCommerce Payment Gateways Fees and Discounts.
-Version: 2.1.0
+Version: 2.1.1
 Author: Algoritmika Ltd
 Author URI: http://www.algoritmika.com
 Copyright: © 2016 Algoritmika Ltd.
@@ -45,7 +45,7 @@ final class Alg_Woocommerce_Checkout_Fees {
 	 * @var   string
 	 * @since 2.1.0
 	 */
-	public $version = '2.1.0';
+	public $version = '2.1.1';
 
 	/**
 	 * @var Alg_Woocommerce_Checkout_Fees The single instance of the class

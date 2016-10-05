@@ -3,7 +3,7 @@ Contributors: algoritmika,anbinder
 Tags: woocommerce,payment,gateway,fee,discount
 Requires at least: 4.4
 Tested up to: 4.6
-Stable tag: 2.1.0
+Stable tag: 2.1.1
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -27,7 +27,8 @@ Plugin requires **minimum setup**: after enabling the fee/discount for selected 
 
 * fee/discount value,
 * fee/discount type: fixed or percent,
-* additional fee,
+* additional fee/discount,
+* minimum and maximum fee/discount values,
 * minimum and/or maximum cart amount for adding the fee/discount,
 * rounding options,
 * taxation options,
@@ -49,6 +50,14 @@ Plugin requires **minimum setup**: after enabling the fee/discount for selected 
 3. Go to WooCommerce > Settings > Payment Gateway Based Fees and Discounts.
 
 == Changelog ==
+
+= 2.1.1 - 04/10/2016 =
+* Fix - Bug when local & global fees have same title, fixed.
+* Dev - "Max Range Options" options section added to "General" settings.
+* Dev - "Override Global Fee" (main and additional) option added to per product settings.
+* Dev - "Minimum Fee Value", "Maximum Fee Value", "Minimum Additional Fee Value" and "Maximum Additional Fee Value" options added to both local and global fees.
+* Fix - Categories restrictions wrongly applied to per product fees, fixed.
+* Tweak - "Minimum Cart Amount" and "Maximum Cart Amount" options title modified.
 
 = 2.1.0 - 20/08/2016 =
 * Fix - Tax bug fixed when "Categories to include - Calculation type" is equal to "Only for selected products".

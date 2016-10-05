@@ -2,7 +2,7 @@
 /**
  * Checkout Fees for WooCommerce - General Section Settings
  *
- * @version 2.1.0
+ * @version 2.1.1
  * @since   1.0.0
  * @author  Algoritmika Ltd.
  */
@@ -36,7 +36,7 @@ class Alg_WC_Checkout_Fees_Settings_General {
 	/**
 	 * get_settings.
 	 *
-	 * @version 2.1.0
+	 * @version 2.1.1
 	 */
 	function get_settings() {
 
@@ -89,6 +89,36 @@ class Alg_WC_Checkout_Fees_Settings_General {
 			array(
 				'type'      => 'sectionend',
 				'id'        => 'alg_woocommerce_checkout_fees_per_product_options',
+			),
+
+			array(
+				'title'     => __( 'Max Range Options', 'alg-woocommerce-fees' ),
+				'type'      => 'title',
+				'id'        => 'alg_woocommerce_checkout_fees_range_options',
+			),
+
+			array(
+				'title'     => __( 'Max Total Discount', 'alg-woocommerce-fees' ),
+				'desc_tip'  => __( 'Negative number.', 'alg-woocommerce-fees' ),
+				'desc'      => __( 'Set 0 to disable.', 'alg-woocommerce-fees' ),
+				'id'        => 'alg_woocommerce_checkout_fees_range_max_total_discounts',
+				'default'   => 0,
+				'type'      => 'number',
+				'custom_attributes' => array( 'max' => 0 ),
+			),
+
+			array(
+				'title'     => __( 'Max Total Fee', 'alg-woocommerce-fees' ),
+				'desc'      => __( 'Set 0 to disable.', 'alg-woocommerce-fees' ),
+				'id'        => 'alg_woocommerce_checkout_fees_range_max_total_fees',
+				'default'   => 0,
+				'type'      => 'number',
+				'custom_attributes' => array( 'min' => 0 ),
+			),
+
+			array(
+				'type'      => 'sectionend',
+				'id'        => 'alg_woocommerce_checkout_fees_range_options',
 			),
 
 			array(

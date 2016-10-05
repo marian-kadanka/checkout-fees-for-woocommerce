@@ -2,7 +2,7 @@
 /**
  * Checkout Fees for WooCommerce - Per Product Meta Boxes
  *
- * @version 2.1.0
+ * @version 2.1.1
  * @since   1.1.0
  * @author  Algoritmika Ltd.
  */
@@ -52,7 +52,7 @@ class Alg_WC_Checkout_Fees_Settings_Per_Product {
 	/**
 	 * get_meta_box_options.
 	 *
-	 * @version 2.0.0
+	 * @version 2.1.1
 	 */
 	function get_meta_box_options() {
 		return array(
@@ -67,6 +67,16 @@ class Alg_WC_Checkout_Fees_Settings_Per_Product {
 				'default' => '',
 				'type'    => 'text',
 				'title'   => __( 'Fee/Discount', 'alg-woocommerce-fees' ) . ' ' . __( 'Title', 'alg-woocommerce-fees' ),
+			),
+			array(
+				'name'    => 'alg_checkout_fees_global_override',
+				'default' => '',
+				'type'    => 'select',
+				'title'   => __( 'Override Global Fee', 'alg-woocommerce-fees' ),
+				'options'   => array(
+					'no'   => __( 'No', 'alg-woocommerce-fees' ),
+					'yes'  => __( 'Yes', 'alg-woocommerce-fees' ),
+				),
 			),
 			array(
 				'name'    => 'alg_checkout_fees_type',
@@ -86,10 +96,34 @@ class Alg_WC_Checkout_Fees_Settings_Per_Product {
 				'custom_atts' => ' step="0.0001"',
 			),
 			array(
+				'name'    => 'alg_checkout_fees_min_fee',
+				'default' => '',
+				'type'    => 'number',
+				'title'   => __( 'Minimum Fee Value', 'alg-woocommerce-fees' ),
+				'custom_atts' => ' step="0.0001"',
+			),
+			array(
+				'name'    => 'alg_checkout_fees_max_fee',
+				'default' => '',
+				'type'    => 'number',
+				'title'   => __( 'Maximum Fee Value', 'alg-woocommerce-fees' ),
+				'custom_atts' => ' step="0.0001"',
+			),
+			array(
 				'name'    => 'alg_checkout_fees_title_2',
 				'default' => '',
 				'type'    => 'text',
 				'title'   => __( 'Additional Fee/Discount', 'alg-woocommerce-fees' ) . ' ' . __( 'Title', 'alg-woocommerce-fees' ) . ' ' . __( '(Optional)', 'alg-woocommerce-fees' ),
+			),
+			array(
+				'name'    => 'alg_checkout_fees_global_override_fee_2',
+				'default' => '',
+				'type'    => 'select',
+				'title'   => __( 'Override Global Fee', 'alg-woocommerce-fees' ),
+				'options'   => array(
+					'no'   => __( 'No', 'alg-woocommerce-fees' ),
+					'yes'  => __( 'Yes', 'alg-woocommerce-fees' ),
+				),
 			),
 			array(
 				'name'    => 'alg_checkout_fees_type_2',
@@ -109,17 +143,31 @@ class Alg_WC_Checkout_Fees_Settings_Per_Product {
 				'custom_atts' => ' step="0.0001"',
 			),
 			array(
+				'name'    => 'alg_checkout_fees_min_fee_2',
+				'default' => '',
+				'type'    => 'number',
+				'title'   => __( 'Minimum Additional Fee Value', 'alg-woocommerce-fees' ),
+				'custom_atts' => ' step="0.0001"',
+			),
+			array(
+				'name'    => 'alg_checkout_fees_max_fee_2',
+				'default' => '',
+				'type'    => 'number',
+				'title'   => __( 'Maximum Additional Fee Value', 'alg-woocommerce-fees' ),
+				'custom_atts' => ' step="0.0001"',
+			),
+			array(
 				'name'    => 'alg_checkout_fees_min_cart_amount',
 				'default' => '',
 				'type'    => 'number',
-				'title'   => __( 'Minimum Amount', 'alg-woocommerce-fees' ),
+				'title'   => __( 'Minimum Cart Amount', 'alg-woocommerce-fees' ),
 				'custom_atts' => ' step="0.0001" min="0"',
 			),
 			array(
 				'name'    => 'alg_checkout_fees_max_cart_amount',
 				'default' => '',
 				'type'    => 'number',
-				'title'   => __( 'Maximum Amount', 'alg-woocommerce-fees' ),
+				'title'   => __( 'Maximum Cart Amount', 'alg-woocommerce-fees' ),
 				'custom_atts' => ' step="0.0001" min="0"',
 			),
 			array(

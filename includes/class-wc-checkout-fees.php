@@ -2,7 +2,7 @@
 /**
  * Checkout Fees for WooCommerce
  *
- * @version 2.1.0
+ * @version 2.1.1
  * @since   1.0.0
  * @author  Algoritmika Ltd.
  */
@@ -12,6 +12,14 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 if ( ! class_exists( 'Alg_WC_Checkout_Fees' ) ) :
 
 class Alg_WC_Checkout_Fees {
+
+	/**
+	 * max ranges.
+	 *
+	 * @since 2.1.1
+	 */
+	public $max_total_all_discounts = 0;
+	public $max_total_all_fees      = 0;
 
 	/**
 	 * Constructor.
@@ -39,6 +47,23 @@ class Alg_WC_Checkout_Fees {
 			}
 			add_shortcode( 'alg_show_checkout_fees_full_info',         array( $this, 'get_checkout_fees_full_info' ) );
 			add_shortcode( 'alg_show_checkout_fees_lowest_price_info', array( $this, 'get_checkout_fees_lowest_price_info' ) );
+		}
+	}
+
+	/**
+	 * get_max_ranges.
+	 *
+	 * @version 2.1.1
+	 * @since   2.1.1
+	 */
+	function get_max_ranges() {
+		$this->max_total_all_discounts = get_option( 'alg_woocommerce_checkout_fees_range_max_total_discounts', 0 );
+		$this->max_total_all_fees      = get_option( 'alg_woocommerce_checkout_fees_range_max_total_fees', 0 );
+		if ( 0 == $this->max_total_all_discounts ) {
+			$this->max_total_all_discounts = false;
+		}
+		if ( 0 == $this->max_total_all_fees ) {
+			$this->max_total_all_fees = false;
 		}
 	}
 
@@ -122,7 +147,7 @@ class Alg_WC_Checkout_Fees {
 	/**
 	 * get_checkout_fees_info.
 	 *
-	 * @version 2.1.0
+	 * @version 2.1.1
 	 * @since   1.2.0
 	 */
 	function get_checkout_fees_info( $lowest_price_only ) {
@@ -178,6 +203,8 @@ class Alg_WC_Checkout_Fees {
 				if ( false === $this->check_countries( $current_gateway ) ) {
 					continue;
 				}
+
+				$this->get_max_ranges();
 
 				// Fee - globally
 				$args = $this->get_the_args_global( $current_gateway );
@@ -385,7 +412,7 @@ class Alg_WC_Checkout_Fees {
 	/**
 	 * add_gateways_fees.
 	 *
-	 * @version 2.1.0
+	 * @version 2.1.1
 	 */
 	function add_gateways_fees( $the_cart ) {
 
@@ -403,6 +430,8 @@ class Alg_WC_Checkout_Fees {
 				$current_gateway = isset( $current_gateway->id ) ? $current_gateway->id : '';
 			}
 		}
+
+		$this->get_max_ranges();
 
 		// Add fee - globally
 		// Checking country
@@ -424,15 +453,20 @@ class Alg_WC_Checkout_Fees {
 	/**
 	 * get_the_args_global.
 	 *
-	 * @version 2.0.0
+	 * @version 2.1.1
 	 * @since   2.0.0
 	 */
 	function get_the_args_global( $current_gateway ) {
 		$args = array();
 		$args['current_gateway']         = $current_gateway;
+		$args['fee_scope']               = 'global';
 		$args['is_enabled']              = get_option( 'alg_gateways_fees_enabled_'          . $current_gateway );
 		$args['min_cart_amount']         = get_option( 'alg_gateways_fees_min_cart_amount_'  . $current_gateway );
 		$args['max_cart_amount']         = get_option( 'alg_gateways_fees_max_cart_amount_'  . $current_gateway );
+		$args['min_fee']                 = get_option( 'alg_gateways_fees_min_fee_'          . $current_gateway );
+		$args['max_fee']                 = get_option( 'alg_gateways_fees_max_fee_'          . $current_gateway );
+		$args['min_fee_2']               = get_option( 'alg_gateways_fees_min_fee_2_'        . $current_gateway );
+		$args['max_fee_2']               = get_option( 'alg_gateways_fees_max_fee_2_'        . $current_gateway );
 		$args['fee_text']                = get_option( 'alg_gateways_fees_text_'             . $current_gateway );
 		$args['fee_value']               = get_option( 'alg_gateways_fees_value_'            . $current_gateway );
 		$args['fee_type']                = get_option( 'alg_gateways_fees_type_'             . $current_gateway );
@@ -453,7 +487,7 @@ class Alg_WC_Checkout_Fees {
 	/**
 	 * get_the_args_local.
 	 *
-	 * @version 2.0.0
+	 * @version 2.1.1
 	 * @since   2.0.0
 	 */
 	function get_the_args_local( $current_gateway, $product_id, $variation_id, $product_qty ) {
@@ -469,9 +503,14 @@ class Alg_WC_Checkout_Fees {
 		}
 		$args = array();
 		$args['current_gateway']         = $current_gateway;
+		$args['fee_scope']               = 'local';
 		$args['is_enabled']              = get_post_meta( $product_id, '_' . 'alg_checkout_fees_enabled_'            . $current_gateway, true );
 		$args['min_cart_amount']         = get_post_meta( $product_id, '_' . 'alg_checkout_fees_min_cart_amount_'    . $current_gateway, true );
 		$args['max_cart_amount']         = get_post_meta( $product_id, '_' . 'alg_checkout_fees_max_cart_amount_'    . $current_gateway, true );
+		$args['min_fee']                 = get_post_meta( $product_id, '_' . 'alg_checkout_fees_min_fee_'            . $current_gateway, true );
+		$args['max_fee']                 = get_post_meta( $product_id, '_' . 'alg_checkout_fees_max_fee_'            . $current_gateway, true );
+		$args['min_fee_2']               = get_post_meta( $product_id, '_' . 'alg_checkout_fees_min_fee_2_'          . $current_gateway, true );
+		$args['max_fee_2']               = get_post_meta( $product_id, '_' . 'alg_checkout_fees_max_fee_2_'          . $current_gateway, true );
 		$args['fee_text']                = ( $do_add_product_name ) ?
 			get_post_meta( $product_id, '_' . 'alg_checkout_fees_title_' . $current_gateway, true ) . $product_formatted_name :
 			get_post_meta( $product_id, '_' . 'alg_checkout_fees_title_' . $current_gateway, true );
@@ -498,7 +537,7 @@ class Alg_WC_Checkout_Fees {
 	/**
 	 * calculate_the_fee.
 	 *
-	 * @version 2.1.0
+	 * @version 2.1.1
 	 * @since   2.0.0
 	 */
 	function calculate_the_fee( $args, $final_fee_to_add, $total_in_cart, $fee_num ) {
@@ -506,12 +545,15 @@ class Alg_WC_Checkout_Fees {
 		if ( 'fee_2' == $fee_num ) {
 			$fee_type  = $fee_type_2;
 			$fee_value = $fee_value_2;
+			$min_fee   = $min_fee_2;
+			$max_fee   = $max_fee_2;
 		}
+		$new_fee = 0;
 		switch ( $fee_type ) {
 			case 'fixed':
 				$fixed_fee = ( 'by_quantity' === $fixed_usage ) ? $fee_value * $product_qty : $fee_value;
 				$fixed_fee = apply_filters( 'wc_aelia_cs_convert', $fixed_fee, get_option( 'woocommerce_currency' ), get_woocommerce_currency() );
-				$final_fee_to_add += $fixed_fee;
+				$new_fee = $fixed_fee;
 				break;
 			case 'percent':
 				if ( 0 != $product_id ) {
@@ -520,22 +562,53 @@ class Alg_WC_Checkout_Fees {
 				} else {
 					$sum_for_fee = $total_in_cart;
 				}
-				$final_fee_to_add += ( $fee_value / 100 ) * $sum_for_fee;
-				if ( 'yes' === $do_round ) {
-					$final_fee_to_add = round( $final_fee_to_add, $precision );
-				}
+				$new_fee = ( $fee_value / 100 ) * $sum_for_fee;
 				break;
+		}
+		// Min fee
+		if ( 0 != $min_fee && $new_fee < $min_fee ) {
+			$new_fee = $min_fee;
+		}
+		// Max fee
+		if ( 0 != $max_fee && $new_fee > $max_fee ) {
+			$new_fee = $max_fee;
+		}
+		// Max total discount
+		if ( false !== $this->max_total_all_discounts ) {
+			if ( $new_fee < $this->max_total_all_discounts ) {
+				$new_fee = $this->max_total_all_discounts;
+			}
+			$this->max_total_all_discounts -= $new_fee;
+			if ( $this->max_total_all_discounts > 0 ) {
+				$this->max_total_all_discounts = 0;
+			}
+		}
+		// Max total fees
+		if ( false !== $this->max_total_all_fees ) {
+			if ( $new_fee > $this->max_total_all_fees ) {
+				$new_fee = $this->max_total_all_fees;
+			}
+			$this->max_total_all_fees -= $new_fee;
+			if ( $this->max_total_all_fees < 0 ) {
+				$this->max_total_all_fees = 0;
+			}
+		}
+		// Final calculations
+		$final_fee_to_add += $new_fee;
+		if ( 'percent' === $fee_type && 'yes' === $do_round ) {
+			$final_fee_to_add = round( $final_fee_to_add, $precision );
 		}
 		return $final_fee_to_add;
 	}
 
 	 /**
-	 * get_sum_for_fee_by_included_and_excluded_cats.
+	 * get_sum_for_fee_by_included_and_excluded_cats - calculate by categories and global fees override.
 	 *
-	 * @version 2.1.0
+	 * @version 2.1.1
 	 * @since   2.1.0
 	 */
 	function get_sum_for_fee_by_included_and_excluded_cats( $total_in_cart, $fee_num, $current_gateway ) {
+		// Categories
 		if ( 'fee_2' == $fee_num ) {
 			$include_cats = ( false === get_option( 'alg_gateways_fees_cats_include_fee_2_' . $current_gateway, false ) ) ?
 				get_option( 'alg_gateways_fees_cats_include_' . $current_gateway, '' ) :
@@ -555,7 +628,9 @@ class Alg_WC_Checkout_Fees {
 				if ( ! empty( $the_intersect ) ) {
 					/* $_product = wc_get_product( $values['product_id'] );
 					$sum_for_fee += $_product->get_price_excluding_tax() * $values['quantity']; */
-					$sum_for_fee += $values['line_total'];
+					if ( ! $this->is_override_global_fees_enabled_for_product( $fee_num, $current_gateway, $values['product_id'] ) ) {
+						$sum_for_fee += $values['line_total'];
+					}
 				}
 			}
 		} elseif ( ! empty( $exclude_cats ) && 'only_for_selected_products' === get_option( 'alg_gateways_fees_cats_exclude_calc_type_' . $current_gateway, 'for_all_cart' ) ) {
@@ -566,22 +641,63 @@ class Alg_WC_Checkout_Fees {
 				if ( empty( $the_intersect ) ) {
 					/* $_product = wc_get_product( $values['product_id'] );
 					$sum_for_fee += $_product->get_price_excluding_tax() * $values['quantity']; */
-					$sum_for_fee += $values['line_total'];
+					if ( ! $this->is_override_global_fees_enabled_for_product( $fee_num, $current_gateway, $values['product_id'] ) ) {
+						$sum_for_fee += $values['line_total'];
+					}
 				}
 			}
 		} else {
 			$sum_for_fee = $total_in_cart;
+			// Global fees override
+			foreach ( WC()->cart->get_cart() as $cart_item_key => $values ) {
+				if ( $this->is_override_global_fees_enabled_for_product( $fee_num, $current_gateway, $values['product_id'] ) ) {
+					$sum_for_fee -= $values['line_total'];
+				}
+			}
 		}
 		return $sum_for_fee;
 	}
 
 	 /**
-	 * do_apply_fees_by_categories.
+	 * is_override_global_fees_enabled_for_product.
 	 *
-	 * @version 2.1.0
+	 * @version 2.1.1
+	 * @since   2.1.1
+	 */
+	function is_override_global_fees_enabled_for_product( $fee_num, $current_gateway, $product_id ) {
+		$override_option_name = ( 'fee_2' == $fee_num ) ? 'alg_checkout_fees_global_override_fee_2_' : 'alg_checkout_fees_global_override_';
+		return (
+			'yes' === get_post_meta( $product_id, '_' . 'alg_checkout_fees_enabled_' . $current_gateway, true ) &&
+			'yes' === get_post_meta( $product_id, '_' . $override_option_name        . $current_gateway, true )
+		) ? true : false;
+	}
+
+	 /**
+	 * do_apply_fees_by_categories - check by categories and by global fee override.
+	 *
+	 * @version 2.1.1
 	 * @since   2.1.0
 	 */
 	function do_apply_fees_by_categories( $fee_num, $current_gateway, $info_product_id ) {
+		// Global fees override
+		if ( 0 != $info_product_id ) {
+			if ( $this->is_override_global_fees_enabled_for_product( $fee_num, $current_gateway, $info_product_id ) ) {
+				return false;
+			}
+		} else {
+			$do_override_global_fees_for_all_cart = true;
+			foreach ( WC()->cart->get_cart() as $cart_item_key => $values ) {
+				if ( ! $this->is_override_global_fees_enabled_for_product( $fee_num, $current_gateway, $values['product_id'] ) ) {
+					// At least one product does not have the override, no need to check further
+					$do_override_global_fees_for_all_cart = false;
+					break;
+				}
+			}
+			if ( $do_override_global_fees_for_all_cart ) {
+				return false;
+			}
+		}
+		// Categories
 		if ( 'fee_2' == $fee_num ) {
 			$include_cats = ( false === get_option( 'alg_gateways_fees_cats_include_fee_2_' . $current_gateway, false ) ) ?
 				get_option( 'alg_gateways_fees_cats_include_' . $current_gateway, '' ) :
@@ -645,7 +761,7 @@ class Alg_WC_Checkout_Fees {
 	 /**
 	 * get_the_fee.
 	 *
-	 * @version 2.1.0
+	 * @version 2.1.1
 	 * @since   1.2.0
 	 */
 	function get_the_fee( $args, $fee_num, $total_in_cart = 0, $is_info_only = false, $info_product_id = 0 ) {
@@ -660,16 +776,16 @@ class Alg_WC_Checkout_Fees {
 			}
 			if ( $total_in_cart >= $min_cart_amount && ( 0 == $max_cart_amount || $total_in_cart <= $max_cart_amount ) ) {
 				if ( 0 != $fee_value && 'fee_2' != $fee_num ) {
-					if ( 0 != $product_id || $this->do_apply_fees_by_categories( 'fee_1', $current_gateway, $info_product_id ) ) {
-						if ( ! $is_info_only && 0 == $product_id ) {
+					if ( /* 0 != $product_id || */ 'local' === $fee_scope || $this->do_apply_fees_by_categories( 'fee_1', $current_gateway, $info_product_id ) ) {
+						if ( ! $is_info_only && /* 0 == $product_id && */ 'global' === $fee_scope ) {
 							$total_in_cart = $this->get_sum_for_fee_by_included_and_excluded_cats( $total_in_cart, 'fee_1', $current_gateway );
 						}
 						$final_fee_to_add = $this->calculate_the_fee( $args, $final_fee_to_add, $total_in_cart, 'fee_1' );
 					}
 				}
 				if ( 0 != $fee_value_2 && 'fee_1' != $fee_num ) {
-					if ( 0 != $product_id || $this->do_apply_fees_by_categories( 'fee_2', $current_gateway, $info_product_id ) ) {
-						if ( ! $is_info_only && 0 == $product_id ) {
+					if ( /* 0 != $product_id || */ 'local' === $fee_scope || $this->do_apply_fees_by_categories( 'fee_2', $current_gateway, $info_product_id ) ) {
+						if ( ! $is_info_only && /* 0 == $product_id && */ 'global' === $fee_scope ) {
 							$total_in_cart = $this->get_sum_for_fee_by_included_and_excluded_cats( $total_in_cart, 'fee_2', $current_gateway );
 						}
 						$final_fee_to_add = $this->calculate_the_fee( $args, $final_fee_to_add, $total_in_cart, 'fee_2' );
@@ -681,9 +797,24 @@ class Alg_WC_Checkout_Fees {
 	}
 
 	/**
-	 * maybe_add_cart_fee.
+	 * recheck_fee_title.
 	 *
 	 * @version 2.0.0
+	 * @since   1.1.0
+	 */
+	function recheck_fee_title( $fee_text, $fees ) {
+		foreach ( $fees as $fee ) {
+			if ( $fee_text === $fee->name ) {
+				$fee_text .= ' #2';
+			}
+		}
+		return $fee_text;
+	}
+
+	/**
+	 * maybe_add_cart_fee.
+	 *
+	 * @version 2.1.1
 	 * @since   1.1.0
 	 */
 	function maybe_add_cart_fee( $args ) {
@@ -703,10 +834,13 @@ class Alg_WC_Checkout_Fees {
 				$tax_class_names = array_merge( array( '', ), WC_Tax::get_tax_classes() );
 				$tax_class_name = $tax_class_names[ $tax_class_id ];
 			}
+			$fees = $woocommerce->cart->get_fees();
 			if ( 0 != $final_fee_to_add ) {
+				$fee_text = $this->recheck_fee_title( $fee_text, $fees );
 				$woocommerce->cart->add_fee( $fee_text, $final_fee_to_add, $taxable, $tax_class_name );
 			}
 			if ( 0 != $final_fee_to_add_2 ) {
+				$fee_text_2 = $this->recheck_fee_title( $fee_text_2, $fees );
 				$woocommerce->cart->add_fee( $fee_text_2, $final_fee_to_add_2, $taxable, $tax_class_name );
 			}
 		}
