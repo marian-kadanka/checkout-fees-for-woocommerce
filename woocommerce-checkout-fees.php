@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Payment Gateway Based Fees and Discounts for WooCommerce Pro
+Plugin Name: Payment Gateway Based Fees and Discounts for WooCommerce
 Plugin URI: http://coder.fm/item/checkout-fees-for-woocommerce-plugin/
 Description: WooCommerce Payment Gateways Fees and Discounts.
 Version: 2.1.1
