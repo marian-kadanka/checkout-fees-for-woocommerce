@@ -2,7 +2,7 @@
 /**
  * Checkout Fees for WooCommerce
  *
- * @version 2.1.1
+ * @version 2.2.0
  * @since   1.0.0
  * @author  Algoritmika Ltd.
  */
@@ -87,12 +87,13 @@ class Alg_WC_Checkout_Fees {
 	/**
 	 * check_countries.
 	 *
-	 * @global fees only
-	 * @version 2.0.0
+	 * global fees only
+	 *
+	 * @version 2.2.0
 	 * @since   2.0.0
 	 */
 	function check_countries( $current_gateway ) {
-		$customer_country = WC()->customer->get_country();
+		$customer_country = ( version_compare( get_option( 'woocommerce_version', null ), '3.0.0', '<' ) ? WC()->customer->get_country() : WC()->customer->get_billing_country() );
 		$include_countries = get_option( 'alg_gateways_fees_countries_include_' . $current_gateway, '' );
 		if ( ! empty( $include_countries ) && ! in_array( $customer_country, $include_countries ) ) {
 			return false;
@@ -147,7 +148,7 @@ class Alg_WC_Checkout_Fees {
 	/**
 	 * get_checkout_fees_info.
 	 *
-	 * @version 2.1.1
+	 * @version 2.2.0
 	 * @since   1.2.0
 	 */
 	function get_checkout_fees_info( $lowest_price_only ) {
@@ -161,21 +162,39 @@ class Alg_WC_Checkout_Fees {
 		if ( $the_product->is_type( 'variable' ) ) {
 			foreach( $the_product->get_available_variations() as $product_variation ) {
 				$variation_product = wc_get_product( $product_variation['variation_id'] );
-				$products_array[] = array(
-					'variation_atts' => $variation_product->get_formatted_variation_attributes( true ),
-					'price_excl_tax' => $variation_product->get_price_excluding_tax(),
-					'price_incl_tax' => $variation_product->get_price_including_tax(),
-					'display_price'  => $variation_product->get_display_price(),
+				$products_array[] = ( version_compare( get_option( 'woocommerce_version', null ), '3.0.0', '<' ) ?
+					array(
+						'variation_atts' => $variation_product->get_formatted_variation_attributes( true ),
+						'price_excl_tax' => $variation_product->get_price_excluding_tax(),
+						'price_incl_tax' => $variation_product->get_price_including_tax(),
+						'display_price'  => $variation_product->get_display_price(),
+					) :
+					array(
+						'variation_atts' => wc_get_formatted_variation( $variation_product, true ),
+						'price_excl_tax' => wc_get_price_excluding_tax( $variation_product ),
+						'price_incl_tax' => wc_get_price_including_tax( $variation_product ),
+						'display_price'  => wc_get_price_to_display( $variation_product ),
+					)
 				);
 			}
 		} else {
-			$products_array = array(
+			$products_array = ( version_compare( get_option( 'woocommerce_version', null ), '3.0.0', '<' ) ?
 				array(
-					'variation_atts' => '',
-					'price_excl_tax' => $the_product->get_price_excluding_tax(),
-					'price_incl_tax' => $the_product->get_price_including_tax(),
-					'display_price'  => $the_product->get_display_price(),
-				),
+					array(
+						'variation_atts' => '',
+						'price_excl_tax' => $the_product->get_price_excluding_tax(),
+						'price_incl_tax' => $the_product->get_price_including_tax(),
+						'display_price'  => $the_product->get_display_price(),
+					),
+				) :
+				array(
+					array(
+						'variation_atts' => '',
+						'price_excl_tax' => wc_get_price_excluding_tax( $the_product ),
+						'price_incl_tax' => wc_get_price_including_tax( $the_product ),
+						'display_price'  => wc_get_price_to_display( $the_product ),
+					),
+				)
 			);
 		}
 
@@ -453,7 +472,7 @@ class Alg_WC_Checkout_Fees {
 	/**
 	 * get_the_args_global.
 	 *
-	 * @version 2.1.1
+	 * @version 2.2.0
 	 * @since   2.0.0
 	 */
 	function get_the_args_global( $current_gateway ) {
@@ -478,6 +497,7 @@ class Alg_WC_Checkout_Fees {
 		$args['is_taxable']              = get_option( 'alg_gateways_fees_is_taxable_'       . $current_gateway );
 		$args['tax_class_id']            = get_option( 'alg_gateways_fees_tax_class_id_'     . $current_gateway, 0 );
 		$args['exclude_shipping']        = get_option( 'alg_gateways_fees_exclude_shipping_' . $current_gateway, 'no' );
+		$args['add_taxes']               = get_option( 'alg_gateways_fees_add_taxes_'        . $current_gateway, 'no' );
 		$args['product_id']              = 0;
 		$args['product_qty']             = 0;
 		$args['fixed_usage']             = 'once';
@@ -487,7 +507,7 @@ class Alg_WC_Checkout_Fees {
 	/**
 	 * get_the_args_local.
 	 *
-	 * @version 2.1.1
+	 * @version 2.2.0
 	 * @since   2.0.0
 	 */
 	function get_the_args_local( $current_gateway, $product_id, $variation_id, $product_qty ) {
@@ -495,7 +515,7 @@ class Alg_WC_Checkout_Fees {
 		if ( $do_add_product_name ) {
 			if ( isset( $variation_id ) && 0 != $variation_id ) {
 				$_product = wc_get_product( $variation_id );
-				$product_formatted_name = ' &ndash; ' . $_product->get_title() . ' &ndash; ' . $_product->get_formatted_variation_attributes( true );
+				$product_formatted_name = ' &ndash; ' . $_product->get_title() . ' &ndash; ' . ( version_compare( get_option( 'woocommerce_version', null ), '3.0.0', '<' ) ? $_product->get_formatted_variation_attributes( true ) : wc_get_formatted_variation( $_product, true ) );
 			} else {
 				$_product = wc_get_product( $product_id );
 				$product_formatted_name = ' &ndash; ' . $_product->get_title();
@@ -526,6 +546,7 @@ class Alg_WC_Checkout_Fees {
 		$args['is_taxable']              = get_post_meta( $product_id, '_' . 'alg_checkout_fees_tax_enabled_'        . $current_gateway, true );
 		$args['tax_class_id']            = get_post_meta( $product_id, '_' . 'alg_checkout_fees_tax_class_'          . $current_gateway, true );
 		$args['exclude_shipping']        = get_post_meta( $product_id, '_' . 'alg_checkout_fees_exclude_shipping_'   . $current_gateway, true );
+		$args['add_taxes']               = get_post_meta( $product_id, '_' . 'alg_checkout_fees_add_taxes_'          . $current_gateway, true );
 		$args['product_id']              = ( 'by_product' === get_post_meta( $product_id, '_' . 'alg_checkout_fees_percent_usage_' . $current_gateway, true ) ) ?
 			( isset( $variation_id ) && 0 != $variation_id ? $variation_id : $product_id ) :
 			0;
@@ -626,8 +647,6 @@ class Alg_WC_Checkout_Fees {
 				$product_cats = $this->get_product_cats( $values['product_id'] );
 				$the_intersect = array_intersect( $product_cats, $include_cats );
 				if ( ! empty( $the_intersect ) ) {
-					/* $_product = wc_get_product( $values['product_id'] );
-					$sum_for_fee += $_product->get_price_excluding_tax() * $values['quantity']; */
 					if ( ! $this->is_override_global_fees_enabled_for_product( $fee_num, $current_gateway, $values['product_id'] ) ) {
 						$sum_for_fee += $values['line_total'];
 					}
@@ -639,8 +658,6 @@ class Alg_WC_Checkout_Fees {
 				$product_cats = $this->get_product_cats( $values['product_id'] );
 				$the_intersect = array_intersect( $product_cats, $exclude_cats );
 				if ( empty( $the_intersect ) ) {
-					/* $_product = wc_get_product( $values['product_id'] );
-					$sum_for_fee += $_product->get_price_excluding_tax() * $values['quantity']; */
 					if ( ! $this->is_override_global_fees_enabled_for_product( $fee_num, $current_gateway, $values['product_id'] ) ) {
 						$sum_for_fee += $values['line_total'];
 					}
@@ -761,7 +778,7 @@ class Alg_WC_Checkout_Fees {
 	 /**
 	 * get_the_fee.
 	 *
-	 * @version 2.1.1
+	 * @version 2.2.0
 	 * @since   1.2.0
 	 */
 	function get_the_fee( $args, $fee_num, $total_in_cart = 0, $is_info_only = false, $info_product_id = 0 ) {
@@ -773,6 +790,15 @@ class Alg_WC_Checkout_Fees {
 				$total_in_cart = ( 'yes' === $exclude_shipping ) ?
 					$woocommerce->cart->cart_contents_total :
 					$woocommerce->cart->cart_contents_total + $woocommerce->cart->shipping_total;
+				if ( 'yes' === $add_taxes ) {
+					$tax_total = WC_Tax::get_tax_total( $woocommerce->cart->taxes );
+					if ( 'yes' === $exclude_shipping ) {
+						$total_in_cart += $tax_total;
+					} else {
+						$shipping_tax_total = WC_Tax::get_tax_total( $woocommerce->cart->shipping_taxes );
+						$total_in_cart += $tax_total + $shipping_tax_total;
+					}
+				}
 			}
 			if ( $total_in_cart >= $min_cart_amount && ( 0 == $max_cart_amount || $total_in_cart <= $max_cart_amount ) ) {
 				if ( 0 != $fee_value && 'fee_2' != $fee_num ) {

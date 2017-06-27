@@ -2,7 +2,7 @@
 /**
  * Checkout Fees for WooCommerce - Gateways Section(s) Settings
  *
- * @version 2.1.1
+ * @version 2.2.0
  * @since   1.0.0
  * @author  Algoritmika Ltd.
  */
@@ -64,7 +64,7 @@ class Alg_WC_Checkout_Fees_Settings_Gateways {
 	/**
 	 * add_gateway_fees_settings.
 	 *
-	 * @version 2.1.1
+	 * @version 2.2.0
 	 */
 	function add_gateway_fees_settings() {
 
@@ -272,12 +272,20 @@ class Alg_WC_Checkout_Fees_Settings_Gateways {
 			),
 
 			array(
+				'title'     => __( 'Add Taxes', 'alg-woocommerce-fees' ),
+				'desc'      => __( 'Add taxes to total cart sum, when calculating fees.', 'alg-woocommerce-fees' ),
+				'id'        => 'alg_gateways_fees_add_taxes_' . $key,
+				'default'   => 'no',
+				'type'      => 'checkbox',
+			),
+
+			array(
 				'title'     => __( 'Customer Countries', 'alg-woocommerce-fees' ),
 				'desc'      => __( 'Countries to include.', 'alg-woocommerce-fees' ) .
 					apply_filters(
 						'alg_wc_checkout_fees_option',
 						' '
-						. __( 'Get <a target="_blank" href="http://coder.fm/item/checkout-fees-for-woocommerce-plugin/">Payment Gateway Based Fees and Discounts for WooCommerce plugin page</a> to change value.', 'alg-woocommerce-fees' )
+						. sprintf( __( 'Get <a target="_blank" href="%s">Payment Gateway Based Fees and Discounts for WooCommerce plugin page</a> to change value.', 'alg-woocommerce-fees' ), 'https://wpcodefactory.com/item/payment-gateway-based-fees-and-discounts-for-woocommerce-plugin/' )
 					),
 				'desc_tip'  => __( 'Fee (or discount) will only be added if customer\'s country is in the list. Leave blank to disable.', 'alg-woocommerce-fees' ),
 				'id'        => 'alg_gateways_fees_countries_include_' . $key,
@@ -295,7 +303,7 @@ class Alg_WC_Checkout_Fees_Settings_Gateways {
 					apply_filters(
 						'alg_wc_checkout_fees_option',
 						' '
-						. __( 'Get <a target="_blank" href="http://coder.fm/item/checkout-fees-for-woocommerce-plugin/">Payment Gateway Based Fees and Discounts for WooCommerce plugin page</a> to change value.', 'alg-woocommerce-fees' )
+						. sprintf( __( 'Get <a target="_blank" href="%s">Payment Gateway Based Fees and Discounts for WooCommerce plugin page</a> to change value.', 'alg-woocommerce-fees' ), 'https://wpcodefactory.com/item/payment-gateway-based-fees-and-discounts-for-woocommerce-plugin/' )
 					),
 				'desc_tip'  => __( 'Fee (or discount) will only be added if customer\'s country is NOT in the list. Leave blank to disable.', 'alg-woocommerce-fees' ),
 				'id'        => 'alg_gateways_fees_countries_exclude_' . $key,
@@ -313,7 +321,7 @@ class Alg_WC_Checkout_Fees_Settings_Gateways {
 					apply_filters(
 						'alg_wc_checkout_fees_option',
 						' '
-						. __( 'Get <a target="_blank" href="http://coder.fm/item/checkout-fees-for-woocommerce-plugin/">Payment Gateway Based Fees and Discounts for WooCommerce plugin page</a> to change value.', 'alg-woocommerce-fees' )
+						. sprintf( __( 'Get <a target="_blank" href="%s">Payment Gateway Based Fees and Discounts for WooCommerce plugin page</a> to change value.', 'alg-woocommerce-fees' ), 'https://wpcodefactory.com/item/payment-gateway-based-fees-and-discounts-for-woocommerce-plugin/' )
 					),
 				'desc_tip'  => __( 'Fee (or discount) will only be added if product of selected category(-ies) is in the cart. Leave blank to disable.', 'alg-woocommerce-fees' ),
 				'id'        => 'alg_gateways_fees_cats_include_' . $key,
@@ -330,7 +338,7 @@ class Alg_WC_Checkout_Fees_Settings_Gateways {
 					apply_filters(
 						'alg_wc_checkout_fees_option',
 						' '
-						. __( 'Get <a target="_blank" href="http://coder.fm/item/checkout-fees-for-woocommerce-plugin/">Payment Gateway Based Fees and Discounts for WooCommerce plugin page</a> to change value.', 'alg-woocommerce-fees' )
+						. sprintf( __( 'Get <a target="_blank" href="%s">Payment Gateway Based Fees and Discounts for WooCommerce plugin page</a> to change value.', 'alg-woocommerce-fees' ), 'https://wpcodefactory.com/item/payment-gateway-based-fees-and-discounts-for-woocommerce-plugin/' )
 					),
 				'desc_tip'  => __( 'Fee (or discount) will only be added if product of selected category(-ies) is in the cart. Leave blank to disable.', 'alg-woocommerce-fees' ),
 				'id'        => 'alg_gateways_fees_cats_include_fee_2_' . $key,
@@ -359,7 +367,7 @@ class Alg_WC_Checkout_Fees_Settings_Gateways {
 					apply_filters(
 						'alg_wc_checkout_fees_option',
 						' '
-						. __( 'Get <a target="_blank" href="http://coder.fm/item/checkout-fees-for-woocommerce-plugin/">Payment Gateway Based Fees and Discounts for WooCommerce plugin page</a> to change value.', 'alg-woocommerce-fees' )
+						. sprintf( __( 'Get <a target="_blank" href="%s">Payment Gateway Based Fees and Discounts for WooCommerce plugin page</a> to change value.', 'alg-woocommerce-fees' ), 'https://wpcodefactory.com/item/payment-gateway-based-fees-and-discounts-for-woocommerce-plugin/' )
 					),
 				'desc_tip'  => __( 'Fee (or discount) will only be added if NO product of selected category(-ies) is in the cart. Leave blank to disable.', 'alg-woocommerce-fees' ),
 				'id'        => 'alg_gateways_fees_cats_exclude_' . $key,
@@ -376,7 +384,7 @@ class Alg_WC_Checkout_Fees_Settings_Gateways {
 					apply_filters(
 						'alg_wc_checkout_fees_option',
 						' '
-						. __( 'Get <a target="_blank" href="http://coder.fm/item/checkout-fees-for-woocommerce-plugin/">Payment Gateway Based Fees and Discounts for WooCommerce plugin page</a> to change value.', 'alg-woocommerce-fees' )
+						. sprintf( __( 'Get <a target="_blank" href="%s">Payment Gateway Based Fees and Discounts for WooCommerce plugin page</a> to change value.', 'alg-woocommerce-fees' ), 'https://wpcodefactory.com/item/payment-gateway-based-fees-and-discounts-for-woocommerce-plugin/' )
 					),
 				'desc_tip'  => __( 'Fee (or discount) will only be added if NO product of selected category(-ies) is in the cart. Leave blank to disable.', 'alg-woocommerce-fees' ),
 				'id'        => 'alg_gateways_fees_cats_exclude_fee_2_' . $key,

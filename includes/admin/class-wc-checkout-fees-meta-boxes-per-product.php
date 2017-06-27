@@ -2,7 +2,7 @@
 /**
  * Checkout Fees for WooCommerce - Per Product Meta Boxes
  *
- * @version 2.1.1
+ * @version 2.2.0
  * @since   1.1.0
  * @author  Algoritmika Ltd.
  */
@@ -52,7 +52,7 @@ class Alg_WC_Checkout_Fees_Settings_Per_Product {
 	/**
 	 * get_meta_box_options.
 	 *
-	 * @version 2.1.1
+	 * @version 2.2.0
 	 */
 	function get_meta_box_options() {
 		return array(
@@ -203,6 +203,12 @@ class Alg_WC_Checkout_Fees_Settings_Per_Product {
 				'title'   => __( 'Exclude Shipping', 'alg-woocommerce-fees' ),
 			),
 			array(
+				'name'    => 'alg_checkout_fees_add_taxes',
+				'default' => '',
+				'type'    => 'checkbox',
+				'title'   => __( 'Add Taxes', 'alg-woocommerce-fees' ),
+			),
+			array(
 				'name'    => 'alg_checkout_fees_percent_usage',
 				'default' => 'for_all_cart',
 				'type'    => 'select',
@@ -268,7 +274,7 @@ class Alg_WC_Checkout_Fees_Settings_Per_Product {
 	/**
 	 * create_meta_box.
 	 *
-	 * @version 2.1.0
+	 * @version 2.2.0
 	 */
 	function create_meta_box() {
 
@@ -300,7 +306,7 @@ class Alg_WC_Checkout_Fees_Settings_Per_Product {
 					$html .= '<div class="tab-content" id="tab-content-' . $gateway_key . '">';
 						$html .= ( 1 != $i && 'bacs' === apply_filters( 'alg_wc_checkout_fees_option', 'bacs' ) ) ? '<div>'
 							. __( 'In free version only Direct Bank Transfer (BACS) fees are available on per product basis.', 'alg-woocommerce-fees' ) . ' '
-							. __( 'Please visit <a target="_blank" href="http://coder.fm/item/checkout-fees-for-woocommerce-plugin/">Payment Gateway Based Fees and Discounts for WooCommerce plugin page</a>.', 'alg-woocommerce-fees' )
+							. sprintf( __( 'Please visit <a target="_blank" href="%s">Payment Gateway Based Fees and Discounts for WooCommerce plugin page</a>.', 'alg-woocommerce-fees' ), 'https://wpcodefactory.com/item/payment-gateway-based-fees-and-discounts-for-woocommerce-plugin/' )
 							. '</div>' : '';
 						$html .= '<table>';
 						foreach ( $this->get_meta_box_options() as $option ) {

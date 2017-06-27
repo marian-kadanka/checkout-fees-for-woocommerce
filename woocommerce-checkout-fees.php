@@ -1,12 +1,14 @@
 <?php
 /*
 Plugin Name: Payment Gateway Based Fees and Discounts for WooCommerce
-Plugin URI: http://coder.fm/item/checkout-fees-for-woocommerce-plugin/
+Plugin URI: https://wpcodefactory.com/item/payment-gateway-based-fees-and-discounts-for-woocommerce-plugin/
 Description: WooCommerce Payment Gateways Fees and Discounts.
-Version: 2.1.1
+Version: 2.2.0
 Author: Algoritmika Ltd
 Author URI: http://www.algoritmika.com
-Copyright: © 2016 Algoritmika Ltd.
+Text Domain: alg-woocommerce-fees
+Domain Path: /langs
+Copyright: © 2017 Algoritmika Ltd.
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 */
@@ -33,10 +35,9 @@ if ( ! class_exists( 'Alg_Woocommerce_Checkout_Fees' ) ) :
 /**
  * Main Alg_Woocommerce_Checkout_Fees Class
  *
- * @version 2.1.0
+ * @version 2.2.0
  * @class   Alg_Woocommerce_Checkout_Fees
  */
-
 final class Alg_Woocommerce_Checkout_Fees {
 
 	/**
@@ -45,7 +46,7 @@ final class Alg_Woocommerce_Checkout_Fees {
 	 * @var   string
 	 * @since 2.1.0
 	 */
-	public $version = '2.1.1';
+	public $version = '2.2.0';
 
 	/**
 	 * @var Alg_Woocommerce_Checkout_Fees The single instance of the class
@@ -61,23 +62,25 @@ final class Alg_Woocommerce_Checkout_Fees {
 	 * @return Alg_Woocommerce_Checkout_Fees - Main instance
 	 */
 	public static function instance() {
-		if ( is_null( self::$_instance ) )
+		if ( is_null( self::$_instance ) ) {
 			self::$_instance = new self();
+		}
 		return self::$_instance;
 	}
 
 	/**
 	 * Alg_Woocommerce_Checkout_Fees Constructor.
 	 *
-	 * @version 2.0.0
+	 * @version 2.2.0
 	 * @access  public
 	 */
 	public function __construct() {
 
+		// Set up localisation
+		load_plugin_textdomain( 'alg-woocommerce-fees', false, dirname( plugin_basename( __FILE__ ) ) . '/langs/' );
+
 		// Include required files
 		$this->includes();
-
-		add_action( 'init', array( $this, 'init' ), 0 );
 
 		if ( is_admin() ) {
 			add_filter( 'woocommerce_get_settings_pages',                     array( $this, 'add_woocommerce_settings_tab' ) );
@@ -138,14 +141,6 @@ final class Alg_Woocommerce_Checkout_Fees {
 	public function add_woocommerce_settings_tab( $settings ) {
 		$settings[] = include( 'includes/admin/class-wc-settings-checkout-fees.php' );
 		return $settings;
-	}
-
-	/**
-	 * Init Alg_Woocommerce_Checkout_Fees when WordPress initialises.
-	 */
-	public function init() {
-		// Set up localisation
-		load_plugin_textdomain( 'alg-woocommerce-fees', false, dirname( plugin_basename( __FILE__ ) ) . '/langs/' );
 	}
 
 	/**

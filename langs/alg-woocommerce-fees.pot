@@ -1,17 +1,31 @@
-# Copyright (C) 2016 Checkout Fees and Discounts for WooCommerce
-# This file is distributed under the same license as the Checkout Fees and Discounts for WooCommerce package.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Payment Gateway Based Fees and Discounts for WooCommerce
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:241
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:258
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:301
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:365
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Checkout Fees and Discounts for WooCommerce 2.0.1\n"
+"Project-Id-Version: Payment Gateway Based Fees and Discounts for WooCommerce "
+"2.2.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/checkout-fees-for-"
 "woocommerce\n"
-"POT-Creation-Date: 2016-08-06 16:25:08+00:00\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2017-06-27 21:04+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: woocommerce-checkout-fees.php:101
+msgid "Settings"
+msgstr ""
 
 #: includes/admin/admin-functions.php:20
 msgid "Afghanistan"
@@ -989,138 +1003,183 @@ msgstr ""
 msgid "Zimbabwe"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:22
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:24
 #: includes/admin/class-wc-checkout-fees-settings-general.php:46
-msgid "Checkout Fees and Discounts"
+#: includes/admin/class-wc-checkout-fees-settings-general.php:52
+#: includes/admin/class-wc-settings-checkout-fees.php:24
+msgid "Payment Gateway Based Fees and Discounts"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:67
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:69
 msgid "Fee/Discount"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:67
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:90
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:69
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:116
 #: includes/admin/class-wc-checkout-fees-settings-gateways.php:110
 msgid "Title"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:73
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:75
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:122
+msgid "Override Global Fee"
+msgstr ""
+
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:77
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:124
+msgid "No"
+msgstr ""
+
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:78
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:125
+msgid "Yes"
+msgstr ""
+
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:85
 #: includes/admin/class-wc-checkout-fees-settings-gateways.php:118
 msgid "Fee Type"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:75
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:98
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:87
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:134
 #: includes/admin/class-wc-checkout-fees-settings-gateways.php:125
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:157
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:177
 msgid "Fixed"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:76
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:99
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:88
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:135
 #: includes/admin/class-wc-checkout-fees-settings-gateways.php:126
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:158
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:178
 msgid "Percent"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:83
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:95
 #: includes/admin/class-wc-checkout-fees-settings-gateways.php:131
 msgid "Fee Value"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:90
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:102
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:141
+msgid "Minimum Fee Value"
+msgstr ""
+
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:109
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:151
+msgid "Maximum Fee Value"
+msgstr ""
+
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:116
 msgid "Additional Fee/Discount"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:90
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:116
 msgid "(Optional)"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:96
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:150
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:132
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:170
 msgid "Additional Fee Type (Optional)"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:106
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:163
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:142
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:183
 msgid "Additional Fee Value (Optional)"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:113
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:173
-msgid "Minimum Amount"
-msgstr ""
-
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:120
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:183
-msgid "Maximum Amount"
-msgstr ""
-
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:127
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:149
 #: includes/admin/class-wc-checkout-fees-settings-gateways.php:193
+msgid "Minimum Additional Fee Value"
+msgstr ""
+
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:156
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:203
+msgid "Maximum Additional Fee Value"
+msgstr ""
+
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:163
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:213
+msgid "Minimum Cart Amount"
+msgstr ""
+
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:170
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:223
+msgid "Maximum Cart Amount"
+msgstr ""
+
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:177
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:233
 msgid "Rounding"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:133
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:183
 msgid "Rounding Precision"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:140
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:210
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:190
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:250
 msgid "Taxes"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:146
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:196
 msgid "Tax Class"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:147
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:223
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:197
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:263
 msgid "Standard Rate"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:153
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:227
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:203
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:267
 msgid "Exclude Shipping"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:159
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:209
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:275
+msgid "Add Taxes"
+msgstr ""
+
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:215
 msgid "Fee Calculation (for Percent Fees)"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:161
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:217
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:359
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:405
 msgid "For all cart"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:162
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:218
 msgid "Only for current product"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:169
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:225
 msgid "Fee Calculation (for Fixed Fees)"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:171
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:227
 msgid "Once"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:172
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:228
 msgid "Multiply by product quantity"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:252
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:308
 msgid ""
 "In free version only Direct Bank Transfer (BACS) fees are available on per "
 "product basis."
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:253
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:309
+#, php-format
 msgid ""
-"Please visit <a target=\"_blank\" href=\"http://coder.fm/item/checkout-fees-"
-"for-woocommerce-plugin/\">Checkout Fees for WooCommerce plugin page</a>."
+"Please visit <a target=\"_blank\" href=\"%s\">Payment Gateway Based Fees and "
+"Discounts for WooCommerce plugin page</a>."
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:276
+#: includes/admin/class-wc-checkout-fees-meta-boxes-per-product.php:332
 #: includes/admin/class-wc-checkout-fees-settings-gateways.php:102
 #: includes/admin/class-wc-checkout-fees-settings-general.php:53
 #: includes/admin/class-wc-checkout-fees-settings-general.php:73
@@ -1132,142 +1191,184 @@ msgid "Fees and Discounts"
 msgstr ""
 
 #: includes/admin/class-wc-checkout-fees-settings-gateways.php:103
+#, php-format
 msgid "Add fee/discount to %s gateway"
 msgstr ""
 
 #: includes/admin/class-wc-checkout-fees-settings-gateways.php:111
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:142
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:162
 msgid "Fee (or discount) title to show to customer."
 msgstr ""
 
 #: includes/admin/class-wc-checkout-fees-settings-gateways.php:119
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:151
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:171
 msgid "Fee (or discount) type."
 msgstr ""
 
 #: includes/admin/class-wc-checkout-fees-settings-gateways.php:120
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:152
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:172
 msgid "Percent or fixed value."
 msgstr ""
 
 #: includes/admin/class-wc-checkout-fees-settings-gateways.php:132
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:164
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:184
 msgid "Fee (or discount) value."
 msgstr ""
 
 #: includes/admin/class-wc-checkout-fees-settings-gateways.php:133
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:165
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:185
 msgid "The value. For discount enter a negative number."
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:141
-msgid "Additional Fee Title (Optional)"
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:142
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:194
+msgid "Minimum fee (or discount)."
 msgstr ""
 
 #: includes/admin/class-wc-checkout-fees-settings-gateways.php:143
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:153
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:195
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:205
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:215
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:225
+#: includes/admin/class-wc-checkout-fees-settings-general.php:103
+#: includes/admin/class-wc-checkout-fees-settings-general.php:112
+msgid "Set 0 to disable."
+msgstr ""
+
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:152
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:204
+msgid "Maximum fee (or discount)."
+msgstr ""
+
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:161
+msgid "Additional Fee Title (Optional)"
+msgstr ""
+
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:163
 msgid ""
 "To display each (i.e. main and additional) fees on different lines in cart "
 "(and checkout), you must set different titles. If titles are equal they will "
 "be merged into single line."
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:174
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:214
 msgid "Minimum cart amount for adding the fee (or discount)."
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:175
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:185
-msgid "Set 0 to disable."
-msgstr ""
-
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:184
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:224
 msgid "Maximum cart amount for adding the fee (or discount)."
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:194
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:234
 msgid "Round the fee (or discount) value before adding to the cart."
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:202
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:242
 msgid "If rounding is enabled, set precision here."
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:211
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:251
 msgid "Is taxable?"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:219
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:259
 msgid "Tax Class (only if Taxable selected)."
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:228
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:268
 msgid "Exclude shipping from total cart sum, when calculating fees."
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:235
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:276
+msgid "Add taxes to total cart sum, when calculating fees."
+msgstr ""
+
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:283
 msgid "Customer Countries"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:236
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:284
 msgid "Countries to include."
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:240
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:258
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:276
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:294
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:288
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:306
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:324
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:341
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:370
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:387
+#, php-format
 msgid ""
-"Get <a target=\"_blank\" href=\"http://coder.fm/item/checkout-fees-for-"
-"woocommerce-plugin/\">Checkout Fees for WooCommerce plugin page</a> to "
-"change value."
+"Get <a target=\"_blank\" href=\"%s\">Payment Gateway Based Fees and "
+"Discounts for WooCommerce plugin page</a> to change value."
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:242
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:290
 msgid ""
 "Fee (or discount) will only be added if customer's country is in the list. "
 "Leave blank to disable."
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:254
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:302
 msgid "Countries to exclude."
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:260
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:308
 msgid ""
 "Fee (or discount) will only be added if customer's country is NOT in the "
 "list. Leave blank to disable."
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:271
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:319
 msgid "Product Categories"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:272
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:320
 msgid "Categories to include."
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:278
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:326
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:343
 msgid ""
 "Fee (or discount) will only be added if product of selected category(-ies) "
 "is in the cart. Leave blank to disable."
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:290
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:337
+msgid "Categories to include (additional fee)."
+msgstr ""
+
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:354
+msgid "Categories to include - Calculation type."
+msgstr ""
+
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:360
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:406
+msgid "Only for selected products"
+msgstr ""
+
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:366
 msgid "Categories to exclude."
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-gateways.php:296
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:372
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:389
 msgid ""
 "Fee (or discount) will only be added if NO product of selected category(-"
 "ies) is in the cart. Leave blank to disable."
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-general.php:22
-msgid "General"
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:383
+msgid "Categories to exclude (additional fee)."
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-general.php:52
-msgid "Payment Gateways Fees and Discounts"
+#: includes/admin/class-wc-checkout-fees-settings-gateways.php:400
+msgid "Categories to exclude - Calculation type."
+msgstr ""
+
+#: includes/admin/class-wc-checkout-fees-settings-general.php:22
+msgid "General"
 msgstr ""
 
 #: includes/admin/class-wc-checkout-fees-settings-general.php:54
@@ -1300,22 +1401,38 @@ msgid "This can help when you adding fees/discounts for variable products."
 msgstr ""
 
 #: includes/admin/class-wc-checkout-fees-settings-general.php:95
-msgid "Cart Options"
+msgid "Max Range Options"
 msgstr ""
 
 #: includes/admin/class-wc-checkout-fees-settings-general.php:101
-msgid "Hide Gateways Fees and Discounts on Cart Page"
+msgid "Max Total Discount"
 msgstr ""
 
 #: includes/admin/class-wc-checkout-fees-settings-general.php:102
+msgid "Negative number."
+msgstr ""
+
+#: includes/admin/class-wc-checkout-fees-settings-general.php:111
+msgid "Max Total Fee"
+msgstr ""
+
+#: includes/admin/class-wc-checkout-fees-settings-general.php:125
+msgid "Cart Options"
+msgstr ""
+
+#: includes/admin/class-wc-checkout-fees-settings-general.php:131
+msgid "Hide Gateways Fees and Discounts on Cart Page"
+msgstr ""
+
+#: includes/admin/class-wc-checkout-fees-settings-general.php:132
 msgid "Hide"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-general.php:114
+#: includes/admin/class-wc-checkout-fees-settings-general.php:144
 msgid "Info on Single Product"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-general.php:116
+#: includes/admin/class-wc-checkout-fees-settings-general.php:146
 msgid ""
 "Replacement values in templates below are: %gateway_title%, "
 "%gateway_description%, %gateway_icon%, %product_title%, "
@@ -1323,7 +1440,7 @@ msgid ""
 "%product_price_diff%."
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-general.php:118
+#: includes/admin/class-wc-checkout-fees-settings-general.php:148
 msgid ""
 "You can also use <em>[alg_show_checkout_fees_full_info]</em> and <em>"
 "[alg_show_checkout_fees_lowest_price_info]</em> shortcodes. Or "
@@ -1332,95 +1449,79 @@ msgid ""
 "functions."
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-general.php:123
+#: includes/admin/class-wc-checkout-fees-settings-general.php:153
 msgid "Info on Single Product Page"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-general.php:124
-#: includes/admin/class-wc-checkout-fees-settings-general.php:176
+#: includes/admin/class-wc-checkout-fees-settings-general.php:154
+#: includes/admin/class-wc-checkout-fees-settings-general.php:206
 msgid "Show"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-general.php:125
+#: includes/admin/class-wc-checkout-fees-settings-general.php:155
 msgid ""
 "This will add gateway fee/discount info on single product frontend page."
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-general.php:132
+#: includes/admin/class-wc-checkout-fees-settings-general.php:162
 msgid "Start HTML"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-general.php:140
+#: includes/admin/class-wc-checkout-fees-settings-general.php:170
 msgid "Row Template HTML"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-general.php:148
+#: includes/admin/class-wc-checkout-fees-settings-general.php:178
 msgid "End HTML"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-general.php:156
-#: includes/admin/class-wc-checkout-fees-settings-general.php:192
+#: includes/admin/class-wc-checkout-fees-settings-general.php:186
+#: includes/admin/class-wc-checkout-fees-settings-general.php:222
 msgid "Position"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-general.php:161
-#: includes/admin/class-wc-checkout-fees-settings-general.php:197
+#: includes/admin/class-wc-checkout-fees-settings-general.php:191
+#: includes/admin/class-wc-checkout-fees-settings-general.php:227
 msgid "Inside product summary"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-general.php:162
-#: includes/admin/class-wc-checkout-fees-settings-general.php:198
+#: includes/admin/class-wc-checkout-fees-settings-general.php:192
+#: includes/admin/class-wc-checkout-fees-settings-general.php:228
 msgid "Before product summary"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-general.php:163
-#: includes/admin/class-wc-checkout-fees-settings-general.php:199
+#: includes/admin/class-wc-checkout-fees-settings-general.php:193
+#: includes/admin/class-wc-checkout-fees-settings-general.php:229
 msgid "After product summary"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-general.php:168
-#: includes/admin/class-wc-checkout-fees-settings-general.php:204
+#: includes/admin/class-wc-checkout-fees-settings-general.php:198
+#: includes/admin/class-wc-checkout-fees-settings-general.php:234
 msgid "Position Order"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-general.php:175
+#: includes/admin/class-wc-checkout-fees-settings-general.php:205
 msgid "Lowest Price Info on Single Product Page"
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-general.php:177
+#: includes/admin/class-wc-checkout-fees-settings-general.php:207
 msgid ""
 "This will add gateway fee/discount lowest price info on single product "
 "frontend page."
 msgstr ""
 
-#: includes/admin/class-wc-checkout-fees-settings-general.php:184
+#: includes/admin/class-wc-checkout-fees-settings-general.php:214
 msgid "Template HTML"
 msgstr ""
 
-#: includes/admin/class-wc-settings-checkout-fees.php:22
-msgid "Checkout Fees"
+#: includes/admin/class-wc-checkout-fees-settings-general.php:241
+msgid "Variable Products Info"
 msgstr ""
 
-#: woocommerce-checkout-fees.php:82
-msgid "Settings"
+#: includes/admin/class-wc-checkout-fees-settings-general.php:246
+msgid "For each variation"
 msgstr ""
 
-#. Plugin Name of the plugin/theme
-msgid "Checkout Fees and Discounts for WooCommerce"
-msgstr ""
-
-#. Plugin URI of the plugin/theme
-msgid "http://coder.fm/item/checkout-fees-for-woocommerce-plugin/"
-msgstr ""
-
-#. Description of the plugin/theme
-msgid "WooCommerce Payment Gateways Fees and Discounts."
-msgstr ""
-
-#. Author of the plugin/theme
-msgid "Algoritmika Ltd"
-msgstr ""
-
-#. Author URI of the plugin/theme
-msgid "http://www.algoritmika.com"
+#: includes/admin/class-wc-checkout-fees-settings-general.php:247
+msgid "As price range"
 msgstr ""

@@ -2,8 +2,8 @@
 Contributors: algoritmika,anbinder
 Tags: woocommerce,payment,gateway,fee,discount
 Requires at least: 4.4
-Tested up to: 4.6
-Stable tag: 2.1.1
+Tested up to: 4.8
+Stable tag: 2.2.0
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -41,7 +41,7 @@ Plugin requires **minimum setup**: after enabling the fee/discount for selected 
 * Drop us a line at http://www.algoritmika.com
 
 = More =
-* Visit the *Payment Gateway Based Fees and Discounts for WooCommerce* plugin page at http://coder.fm/item/payment-gateway-based-fees-and-discounts-for-woocommerce-plugin/
+* Visit the *Payment Gateway Based Fees and Discounts for WooCommerce* plugin page at https://wpcodefactory.com/item/payment-gateway-based-fees-and-discounts-for-woocommerce-plugin/
 
 == Installation ==
 
@@ -51,8 +51,17 @@ Plugin requires **minimum setup**: after enabling the fee/discount for selected 
 
 == Changelog ==
 
+= 2.2.0 - 27/06/2017 =
+* Dev - WooCommerce 3.x.x compatibility - Deprecated `get_price_excluding_tax()`, `get_price_including_tax()`, `get_display_price()` notices fixed.
+* Dev - WooCommerce 3.x.x compatibility - Deprecated `get_formatted_variation_attributes()` notice fixed.
+* Dev - WooCommerce 3.x.x compatibility - Deprecated `get_country()` notice fixed.
+* Dev - "Add Taxes" option added for both global and per product fees.
+* Dev - `load_plugin_textdomain()` moved from `init` hook to constructor.
+* Tweak - Plugin header updated ("Text Domain" and "Domain Path" added).
+* Tweak - Plugin link updated from <a href="http://coder.fm">http://coder.fm</a> to <a href="https://wpcodefactory.com">https://wpcodefactory.com</a>.
+
 = 2.1.1 - 04/10/2016 =
-* Fix - Bug when local & global fees have same title, fixed.
+* Fix - Bug when local and global fees have same title, fixed.
 * Dev - "Max Range Options" options section added to "General" settings.
 * Dev - "Override Global Fee" (main and additional) option added to per product settings.
 * Dev - "Minimum Fee Value", "Maximum Fee Value", "Minimum Additional Fee Value" and "Maximum Additional Fee Value" options added to both local and global fees.
