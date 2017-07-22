@@ -2,7 +2,7 @@
 /**
  * Checkout Fees for WooCommerce
  *
- * @version 2.2.0
+ * @version 2.2.1
  * @since   1.0.0
  * @author  Algoritmika Ltd.
  */
@@ -25,6 +25,7 @@ class Alg_WC_Checkout_Fees {
 	 * Constructor.
 	 *
 	 * @version 2.0.0
+	 * @todo    per product - bulk settings editor
 	 */
 	public function __construct() {
 		if ( 'yes' === get_option( 'alg_woocommerce_checkout_fees_enabled' ) ) {
@@ -431,9 +432,15 @@ class Alg_WC_Checkout_Fees {
 	/**
 	 * add_gateways_fees.
 	 *
-	 * @version 2.1.1
+	 * @version 2.2.1
 	 */
 	function add_gateways_fees( $the_cart ) {
+
+		if ( ! isset( $this->add_gateways_fees_executed ) ) {
+			$this->add_gateways_fees_executed = true;
+		} else {
+			return;
+		}
 
 		if ( 'yes' === get_option( 'alg_woocommerce_checkout_fees_hide_on_cart', 'no' ) && is_cart() ) return;
 

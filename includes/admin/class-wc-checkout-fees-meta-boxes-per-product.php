@@ -2,7 +2,7 @@
 /**
  * Checkout Fees for WooCommerce - Per Product Meta Boxes
  *
- * @version 2.2.0
+ * @version 2.2.1
  * @since   1.1.0
  * @author  Algoritmika Ltd.
  */
@@ -274,7 +274,7 @@ class Alg_WC_Checkout_Fees_Settings_Per_Product {
 	/**
 	 * create_meta_box.
 	 *
-	 * @version 2.2.0
+	 * @version 2.2.1
 	 */
 	function create_meta_box() {
 
@@ -310,8 +310,10 @@ class Alg_WC_Checkout_Fees_Settings_Per_Product {
 							. '</div>' : '';
 						$html .= '<table>';
 						foreach ( $this->get_meta_box_options() as $option ) {
-							if ( ! isset( $option['custom_atts'] ) ) $option['custom_atts'] = '';
-							$option['custom_atts'] = ( 'bacs' != $gateway_key && 'bacs' === apply_filters( 'alg_wc_checkout_fees_option', 'bacs' ) ) ? ' readonly="readonly"' : '';
+							if ( ! isset( $option['custom_atts'] ) ) {
+								$option['custom_atts'] = '';
+							}
+							$option['custom_atts'] .= ( 'bacs' != $gateway_key && 'bacs' === apply_filters( 'alg_wc_checkout_fees_option', 'bacs' ) ? ' readonly="readonly"' : '' );
 							$option_name = $option['name'] . '_' . $gateway_key;
 							$option_value = get_post_meta( $current_post_id, '_' . $option_name, true );
 							$option_title = ( '' == $option['title'] ) ? '<span style="font-size:large;font-weight:bold;">' . $gateway_title . '</span>' : $option['title'];

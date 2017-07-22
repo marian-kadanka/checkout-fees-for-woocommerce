@@ -3,7 +3,7 @@
 Plugin Name: Payment Gateway Based Fees and Discounts for WooCommerce
 Plugin URI: https://wpcodefactory.com/item/payment-gateway-based-fees-and-discounts-for-woocommerce-plugin/
 Description: WooCommerce Payment Gateways Fees and Discounts.
-Version: 2.2.0
+Version: 2.2.1
 Author: Algoritmika Ltd
 Author URI: http://www.algoritmika.com
 Text Domain: alg-woocommerce-fees
@@ -46,7 +46,7 @@ final class Alg_Woocommerce_Checkout_Fees {
 	 * @var   string
 	 * @since 2.1.0
 	 */
-	public $version = '2.2.0';
+	public $version = '2.2.1';
 
 	/**
 	 * @var Alg_Woocommerce_Checkout_Fees The single instance of the class

@@ -3,7 +3,7 @@ Contributors: algoritmika,anbinder
 Tags: woocommerce,payment,gateway,fee,discount
 Requires at least: 4.4
 Tested up to: 4.8
-Stable tag: 2.2.0
+Stable tag: 2.2.1
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -50,6 +50,10 @@ Plugin requires **minimum setup**: after enabling the fee/discount for selected 
 3. Go to WooCommerce > Settings > Payment Gateway Based Fees and Discounts.
 
 == Changelog ==
+
+= 2.2.1 - 22/07/2017 =
+* Fix - Per Product - `custom_atts` for fields (step etc.) fixed.
+* Fix - Additional check if `add_gateways_fees()` has already been executed added (this prevents fees duplicating on some servers).
 
 = 2.2.0 - 27/06/2017 =
 * Dev - WooCommerce 3.x.x compatibility - Deprecated `get_price_excluding_tax()`, `get_price_including_tax()`, `get_display_price()` notices fixed.
