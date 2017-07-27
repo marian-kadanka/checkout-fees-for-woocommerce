@@ -2,7 +2,7 @@
 /**
  * Checkout Fees for WooCommerce - General Section Settings
  *
- * @version 2.1.1
+ * @version 2.2.2
  * @since   1.0.0
  * @author  Algoritmika Ltd.
  */
@@ -15,6 +15,8 @@ class Alg_WC_Checkout_Fees_Settings_General {
 
 	/**
 	 * Constructor.
+	 *
+	 * @version 2.2.2
 	 */
 	public function __construct() {
 
@@ -23,6 +25,27 @@ class Alg_WC_Checkout_Fees_Settings_General {
 
 		add_filter( 'woocommerce_get_sections_alg_checkout_fees',              array( $this, 'settings_section' ) );
 		add_filter( 'woocommerce_get_settings_alg_checkout_fees_' . $this->id, array( $this, 'get_settings' ), PHP_INT_MAX );
+
+		add_action( 'woocommerce_admin_field_' . 'alg_woocommerce_checkout_fees_custom_link', array( $this, 'output_custom_link' ) );
+	}
+
+	/**
+	 * output_custom_link.
+	 *
+	 * @version 2.2.2
+	 * @since   2.2.2
+	 */
+	function output_custom_link( $value ) {
+		$tooltip_html = ( isset( $value['desc_tip'] ) && '' != $value['desc_tip'] ) ?
+			'<span class="woocommerce-help-tip" data-tip="' . $value['desc_tip'] . '"></span>' : '';
+		?><tr valign="top">
+			<th scope="row" class="titledesc">
+				<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?></label><?php echo $tooltip_html; ?>
+			</th>
+			<td class="forminp forminp-<?php echo sanitize_title( $value['type'] ) ?>">
+				<?php echo $value['link']; ?>
+			</td>
+		</tr><?php
 	}
 
 	/**
@@ -36,7 +59,7 @@ class Alg_WC_Checkout_Fees_Settings_General {
 	/**
 	 * get_settings.
 	 *
-	 * @version 2.1.1
+	 * @version 2.2.2
 	 */
 	function get_settings() {
 
@@ -251,6 +274,25 @@ class Alg_WC_Checkout_Fees_Settings_General {
 			array(
 				'type'      => 'sectionend',
 				'id'        => 'alg_woocommerce_checkout_fees_info_options',
+			),
+
+			array(
+				'title'     => __( 'Advanced Options', 'alg-woocommerce-fees' ),
+				'type'      => 'title',
+				'id'        => 'alg_woocommerce_checkout_fees_advanced_options',
+			),
+
+			array(
+				'title'     => __( 'Delete All Plugin\'s Data', 'alg-woocommerce-fees' ),
+				'link'      => '<a class="button-primary" href="' . add_query_arg( 'alg_woocommerce_checkout_fees_delete_all_data', '1' ) . '" ' .
+					'onclick="return confirm(\'' . __( 'Are you sure?', 'alg-woocommerce-fees' ) . '\')"' . '>' . __( 'Delete', 'alg-woocommerce-fees' ) . '</a>',
+				'id'        => 'alg_woocommerce_checkout_fees_delete_all_data',
+				'type'      => 'alg_woocommerce_checkout_fees_custom_link',
+			),
+
+			array(
+				'type'      => 'sectionend',
+				'id'        => 'alg_woocommerce_checkout_fees_advanced_options',
 			),
 
 		);

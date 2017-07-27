@@ -2,7 +2,7 @@
 /**
  * Checkout Fees for WooCommerce
  *
- * @version 2.2.1
+ * @version 2.2.2
  * @since   1.0.0
  * @author  Algoritmika Ltd.
  */
@@ -411,7 +411,7 @@ class Alg_WC_Checkout_Fees {
 	/**
 	 * register_script.
 	 */
-	public function register_script() {
+	function register_script() {
 		wp_register_script(
 			'alg-payment-gateways-checkout',
 			trailingslashit( plugin_dir_url( __FILE__ ) ) . 'js/checkout-fees.js',
@@ -424,7 +424,7 @@ class Alg_WC_Checkout_Fees {
 	/**
 	 * enqueue_checkout_script.
 	 */
-	public function enqueue_checkout_script() {
+	function enqueue_checkout_script() {
 		if ( ! is_checkout() ) return;
 		wp_enqueue_script( 'alg-payment-gateways-checkout' );
 	}
@@ -432,17 +432,19 @@ class Alg_WC_Checkout_Fees {
 	/**
 	 * add_gateways_fees.
 	 *
-	 * @version 2.2.1
+	 * @version 2.2.2
 	 */
 	function add_gateways_fees( $the_cart ) {
 
-		if ( ! isset( $this->add_gateways_fees_executed ) ) {
+		/* if ( ! isset( $this->add_gateways_fees_executed ) ) {
 			$this->add_gateways_fees_executed = true;
 		} else {
 			return;
-		}
+		} */
 
-		if ( 'yes' === get_option( 'alg_woocommerce_checkout_fees_hide_on_cart', 'no' ) && is_cart() ) return;
+		if ( 'yes' === get_option( 'alg_woocommerce_checkout_fees_hide_on_cart', 'no' ) && is_cart() ) {
+			return;
+		}
 
 		global $woocommerce;
 
