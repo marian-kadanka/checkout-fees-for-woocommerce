@@ -13,6 +13,9 @@ if ( ! class_exists( 'Alg_WC_Checkout_Fees' ) ) :
 
 class Alg_WC_Checkout_Fees {
 
+	public $base_currency;
+	public $current_currency;
+
 	/**
 	 * max ranges.
 	 *
@@ -48,7 +51,18 @@ class Alg_WC_Checkout_Fees {
 			}
 			add_shortcode( 'alg_show_checkout_fees_full_info',         array( $this, 'get_checkout_fees_full_info' ) );
 			add_shortcode( 'alg_show_checkout_fees_lowest_price_info', array( $this, 'get_checkout_fees_lowest_price_info' ) );
+			$this->base_currency = get_option( 'woocommerce_currency' );
 		}
+	}
+
+	/**
+	 * convert_currency.
+	 */
+	function convert_currency( $amount ) {
+		if ( ! isset( $this->current_currency ) ) {
+			$this->current_currency = get_woocommerce_currency();
+		}
+		return apply_filters( 'wc_aelia_cs_convert', $amount, $this->base_currency, $this->current_currency );
 	}
 
 	/**
@@ -58,8 +72,8 @@ class Alg_WC_Checkout_Fees {
 	 * @since   2.1.1
 	 */
 	function get_max_ranges() {
-		$this->max_total_all_discounts = get_option( 'alg_woocommerce_checkout_fees_range_max_total_discounts', 0 );
-		$this->max_total_all_fees      = get_option( 'alg_woocommerce_checkout_fees_range_max_total_fees', 0 );
+		$this->max_total_all_discounts = $this->convert_currency( get_option( 'alg_woocommerce_checkout_fees_range_max_total_discounts', 0 ) );
+		$this->max_total_all_fees      = $this->convert_currency( get_option( 'alg_woocommerce_checkout_fees_range_max_total_fees', 0 ) );
 		if ( 0 == $this->max_total_all_discounts ) {
 			$this->max_total_all_discounts = false;
 		}
@@ -489,12 +503,12 @@ class Alg_WC_Checkout_Fees {
 		$args['current_gateway']         = $current_gateway;
 		$args['fee_scope']               = 'global';
 		$args['is_enabled']              = get_option( 'alg_gateways_fees_enabled_'          . $current_gateway );
-		$args['min_cart_amount']         = get_option( 'alg_gateways_fees_min_cart_amount_'  . $current_gateway );
-		$args['max_cart_amount']         = get_option( 'alg_gateways_fees_max_cart_amount_'  . $current_gateway );
-		$args['min_fee']                 = get_option( 'alg_gateways_fees_min_fee_'          . $current_gateway );
-		$args['max_fee']                 = get_option( 'alg_gateways_fees_max_fee_'          . $current_gateway );
-		$args['min_fee_2']               = get_option( 'alg_gateways_fees_min_fee_2_'        . $current_gateway );
-		$args['max_fee_2']               = get_option( 'alg_gateways_fees_max_fee_2_'        . $current_gateway );
+		$args['min_cart_amount']         = $this->convert_currency( get_option( 'alg_gateways_fees_min_cart_amount_' . $current_gateway ) );
+		$args['max_cart_amount']         = $this->convert_currency( get_option( 'alg_gateways_fees_max_cart_amount_' . $current_gateway ) );
+		$args['min_fee']                 = $this->convert_currency( get_option( 'alg_gateways_fees_min_fee_' . $current_gateway ) );
+		$args['max_fee']                 = $this->convert_currency( get_option( 'alg_gateways_fees_max_fee_' . $current_gateway ) );
+		$args['min_fee_2']               = $this->convert_currency( get_option( 'alg_gateways_fees_min_fee_2_' . $current_gateway ) );
+		$args['max_fee_2']               = $this->convert_currency( get_option( 'alg_gateways_fees_max_fee_2_' . $current_gateway ) );
 		$args['fee_text']                = get_option( 'alg_gateways_fees_text_'             . $current_gateway );
 		$args['fee_value']               = get_option( 'alg_gateways_fees_value_'            . $current_gateway );
 		$args['fee_type']                = get_option( 'alg_gateways_fees_type_'             . $current_gateway );
@@ -582,7 +596,7 @@ class Alg_WC_Checkout_Fees {
 		switch ( $fee_type ) {
 			case 'fixed':
 				$fixed_fee = ( 'by_quantity' === $fixed_usage ) ? $fee_value * $product_qty : $fee_value;
-				$fixed_fee = apply_filters( 'wc_aelia_cs_convert', $fixed_fee, get_option( 'woocommerce_currency' ), get_woocommerce_currency() );
+				$fixed_fee = $this->convert_currency( $fixed_fee );
 				$new_fee = $fixed_fee;
 				break;
 			case 'percent':
